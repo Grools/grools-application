@@ -1,0 +1,159 @@
+/*
+ *
+ * Copyright LABGeM 2016
+ *
+ * author: Jonathan MERCIER
+ *
+ * This software is a computer program whose purpose is to annotate a complete genome.
+ *
+ * This software is governed by the CeCILL  license under French law and
+ * abiding by the rules of distribution of free software.  You can  use,
+ * modify and/ or redistribute the software under the terms of the CeCILL
+ * license as circulated by CEA, CNRS and INRIA at the following URL
+ * "http://www.cecill.info".
+ *
+ * As a counterpart to the access to the source code and  rights to copy,
+ * modify and redistribute granted by the license, users are provided only
+ * with a limited warranty  and the software's author,  the holder of the
+ * economic rights,  and the successive licensors  have only  limited
+ * liability.
+ *
+ * In this respect, the user's attention is drawn to the risks associated
+ * with loading,  using,  modifying and/or developing or reproducing the
+ * software by the user in light of its specific status of free software,
+ * that may mean  that it is complicated to manipulate,  and  that  also
+ * therefore means  that it is reserved for developers  and  experienced
+ * professionals having in-depth computer knowledge. Users are therefore
+ * encouraged to load and test the software's suitability as regards their
+ * requirements in conditions enabling the security of their systems and/or
+ * data to be ensured and,  more generally, to use and operate it in the
+ * same conditions as regards security.
+ *
+ * The fact that you are presently reading this means that you have had
+ * knowledge of the CeCILL license and that you accept its terms.
+ *
+ */
+
+import java.text.SimpleDateFormat
+
+buildscript {
+    repositories {
+        mavenCentral()
+        jcenter()
+    }
+    dependencies {
+        classpath 'be.jlr-home.gradle:plantumlPlugin:0.1.+'
+    }
+}
+plugins { id "com.bmuschko.nexus"               version "2.3.1" }
+plugins { id 'com.github.johnrengelman.shadow'  version '1.2.3' }
+
+apply plugin: 'application'
+apply plugin: 'plantuml'
+apply plugin: 'idea'
+apply plugin: 'maven'
+apply plugin: 'findbugs'
+apply plugin: 'com.bmuschko.nexus'
+
+sourceCompatibility = theCompatibility
+targetCompatibility = theCompatibility
+
+group               = theGroup
+version             = theVersion
+description         = theDescription
+
+mainClassName = theMainClass
+
+repositories {
+    mavenLocal()
+    mavenCentral()
+    maven { url "http://repository.jboss.org/nexus/content/groups/public" }
+    maven { url "https://gsphere.genoscope.cns.fr/nexus/content/groups/public" }
+}
+
+dependencies {
+    compile     group: 'org.projectlombok'  , name: 'lombok'                            , version: lombokVersion
+    compile     group: theGroup             , name: 'grools-checker-genome-properties'  , version: genomePropertiesVersion
+    compile     group: theGroup             , name: 'grools-checker-svg'                , version: checkerSVGVersion
+    compile     group: 'commons-cli'        , name: 'commons-cli'                       , version: commonsCliVersion
+    compile     group: 'org.apache.commons' , name: 'commons-csv'                       , version: commonsCSVVersion
+    compile     group: 'ch.qos.logback'     , name: 'logback-classic'                   , version: logbackVersion
+    testCompile group: 'junit'              , name: 'junit'                             , version: junitVersion
+
+}
+
+jar {
+    manifest {
+        attributes( "Implementation-Title":     theName,
+                "Implementation-Version":       theVersion,
+                "Implementation-Vendor":        "Genoscope, LABGeM",
+                "Product-Name":                 theName,
+                "Main-Class":                   theMainClass,
+                "provider":                     "Genoscope",
+                "Created-By":                   "LABGeM",
+                "relevant":                     "GROOLS Application.",
+                "Build-Date":                   new SimpleDateFormat("yyyy-MM-dd").format(new Date()),
+                "Build-JDK":                    System.getProperty("java.version"),
+                "Build-Gradle":                 project.gradle.gradleVersion
+        )
+    }
+    baseName = theName
+}
+
+tasks.withType(JavaCompile) {
+    options.compilerArgs << "-Xlint:unchecked" << "-Xlint:deprecation"
+}
+
+plantuml{
+    fileFormat = 'SVG'
+}
+
+findbugs {
+    effort = "max"
+    ignoreFailures = true
+}
+
+modifyPom {
+    project {
+        name          theName
+        description   theDescription
+        url           urlBase+urlCore
+        inceptionYear '2014'
+        scm {
+            url                   urlBase+urlCore
+            connection            urlBase+urlCore+'.git'
+            developerConnection   gitBase+urlCore+'.git'
+        }
+        licenses {
+            license {
+                name          'CeCILL-C'
+                url           'http://www.cecill.info/licences/Licence_CeCILL-C_V1-en.txt'
+                distribution  'repo'
+            }
+        }
+        developers {
+            developer {
+                id    'jmercier'
+                name  'Jonathan MERCIER'
+                email 'jmercier@genoscope.cns.fr'
+            }
+        }
+    }
+}
+
+shadowJar {
+    baseName    = theName
+    classifier  = null
+}
+
+extraArchive {
+    sources  = true
+    tests    = true
+    javadoc  = true
+}
+
+nexus {
+    sign                  = false
+    repositoryUrl         = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/releases/'
+    snapshotRepositoryUrl = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/snapshots/'
+}
