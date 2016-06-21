@@ -85,11 +85,12 @@ public class Main {
 
         options.addOption( "h", "help"              , false , "Display usage" );
         options.addOption( "v", "version"           , false , "Display application version");
-        options.addOption( "f", "falsehood"         , false , "Non observed leaves prior-knowledge are considered as False");
-        options.addOption( "u", "unipathway"        , false  , "use unipathway as graph of prior-knowledge");
-        options.addOption( "g", "genome-properties" , false  , "use genome-properties as graph of prior-knowledge");
-        options.addOption( "d", "dispensable"       , false  , "Enable the mode dispensable");
-        options.addOption( "s", "specific"          , false  , "Enable the mode specific");
+        options.addOption( "f", "falsehood"         , false , "Non observed HMM matching to leaves prior-knowledge are considered as False (only with genome-properties)");
+        options.addOption( "u", "unipathway"        , false , "use unipathway as graph of prior-knowledge");
+        options.addOption( "g", "genome-properties" , false , "use genome-properties as graph of prior-knowledge");
+        options.addOption( "i", "input"             , true  , "use a external file to make prior-knowledge graph");
+        options.addOption( "d", "dispensable"       , false , "Enable the mode dispensable");
+        options.addOption( "s", "specific"          , false , "Enable the mode specific");
 
         if (args.length < 1) {
             LOGGER.error( "Error: any parameter provided");
@@ -266,7 +267,10 @@ public class Main {
             input = "unipathway";
         }
         else if( cli.hasOption( "genome-properties" ) ){
-            integrator = new GenomePropertiesIntegrator( grools );
+            if( cli.hasOption( "input") )
+                integrator = new GenomePropertiesIntegrator( grools, new File(cli.getOptionValue("input") ) );
+            else
+                integrator = new GenomePropertiesIntegrator( grools );
             input = "genome-properties";
         }
         else{
