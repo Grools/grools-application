@@ -36,8 +36,8 @@
 
 package fr.cea.ig.grools.application;
 
-import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
+import fr.cea.ig.genome_properties.model.ComponentEvidence;
 import fr.cea.ig.grools.Integrator;
 import fr.cea.ig.grools.Mode;
 import fr.cea.ig.grools.Reasoner;
@@ -197,8 +197,8 @@ public class Main {
     }
 
     public static void main( String[] args ) throws Exception {
-        final Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
-        root.setLevel( Level.OFF );
+//        final Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
+//        root.setLevel( Level.OFF );
         final Set<PriorKnowledge> observationRelatedTo  = new HashSet<>(  );
         final Set<PriorKnowledge> priorKnowledgeLeaves;
 
@@ -259,6 +259,7 @@ public class Main {
             mode = Mode.NORMAL;
 
 
+        LOGGER.info("Generating concept graph...");
         final Reasoner      grools  = new ReasonerImpl( mode );
         String input = null;
         if( cli.hasOption( "unipathway" ) ) {
@@ -274,6 +275,7 @@ public class Main {
             System.exit( 1 );
         }
 
+        LOGGER.info("Inserting observation...");
         assert integrator != null;
         integrator.integration(  );
 
@@ -297,17 +299,27 @@ public class Main {
         }
 
         if( cli.hasOption( "falsehood" )) {
+            if( ! cli.hasOption("genome-properties") ){
+                LOGGER.error( "falsehood option can be used only with genome-properties option!" );
+                System.exit( 1 );
+            }
             priorKnowledgeLeaves = grools.getLeavesPriorKnowledges();
             priorKnowledgeLeaves.removeAll( observationRelatedTo );
             for ( final PriorKnowledge leaf : priorKnowledgeLeaves ) {
-                final Observation o = toObservation( "No_"+leaf.getName(), leaf.getLabel(), input, leaf.getDescription(), TruthValue.f, ObservationType.COMPUTATION );
-                final Relation r = new RelationImpl( o, leaf );
-                grools.insert( o, r );
+                final GenomePropertiesIntegrator gpi = (GenomePropertiesIntegrator) integrator;
+                ComponentEvidence term = (ComponentEvidence) gpi.getRdfParser().getTerm(leaf.getLabel());
+                if( term.getCategory().equals("HMM")) {
+                    final Observation o = toObservation("No_" + leaf.getName(), leaf.getLabel(), input, leaf.getDescription(), TruthValue.f, ObservationType.COMPUTATION);
+                    final Relation r = new RelationImpl(o, leaf);
+                    grools.insert(o, r);
+                }
             }
         }
 
+        LOGGER.info("Reasoning...");
         grools.reasoning();
 
+        LOGGER.info("Reporting...");
         final List<PriorKnowledge> tops = grools.getTopsPriorKnowledges()
                                                .stream()
                                                .sorted( (a,b) -> a.getName().compareTo( b.getName() ) )

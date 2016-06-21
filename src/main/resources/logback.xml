@@ -45,5 +45,6 @@
     <root level="info">
         <appender-ref ref="STDOUT" />
     </root>
-    <logger name="fr.cea.ig" level="OFF"/>
+    <logger name="fr.cea.ig" level="INFO"/>
+    <logger name="org.drools" level="OFF"/>
 </configuration>
