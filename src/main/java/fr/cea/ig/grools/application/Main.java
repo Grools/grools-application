@@ -48,14 +48,13 @@ import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.svg.GraphWriter;
 import org.apache.commons.cli.*;
 import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.nio.file.Paths;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -197,11 +196,16 @@ public class Main {
                               .build();
     }
 
-    public static void main( String[] args ) throws Exception {
+    public static void main( String[] args ) {
 //        final Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 //        root.setLevel( Level.OFF );
         final Set<PriorKnowledge> observationRelatedTo  = new HashSet<>(  );
         final Set<PriorKnowledge> priorKnowledgeLeaves;
+
+        final  CSVFormat format = CSVFormat.RFC4180
+                .withDelimiter( ';' )
+                .withRecordSeparator('\n')
+                .withFirstRecordAsHeader();
 
         Integrator integrator = null;
 
@@ -236,11 +240,7 @@ public class Main {
         }
 
         try{
-            lines = CSVFormat.RFC4180
-                            .withDelimiter( ';' )
-                            .withRecordSeparator('\n')
-                            .withFirstRecordAsHeader()
-                            .parse( in );
+            lines = format.parse( in );
         }
         catch ( IOException e ){
             LOGGER.error( "Error while reading "+  cli.getArgs()[ 0 ]);
@@ -268,9 +268,20 @@ public class Main {
         }
         else if( cli.hasOption( "genome-properties" ) ){
             if( cli.hasOption( "input") )
-                integrator = new GenomePropertiesIntegrator( grools, new File(cli.getOptionValue("input") ) );
-            else
-                integrator = new GenomePropertiesIntegrator( grools );
+                try {
+                    integrator = new GenomePropertiesIntegrator( grools, new File(cli.getOptionValue("input") ) );
+                } catch (Exception e) {
+                    LOGGER.error("Error while reading: "+cli.getOptionValue("input"));
+                    System.exit(1);
+                }
+            else {
+                try {
+                    integrator = new GenomePropertiesIntegrator(grools);
+                } catch (Exception e) {
+                    LOGGER.error("Error while reading: internal rdf file");
+                    System.exit(1);
+                }
+            }
             input = "genome-properties";
         }
         else{
@@ -324,14 +335,82 @@ public class Main {
         grools.reasoning();
 
         LOGGER.info("Reporting...");
+        LOGGER.info("  - HTML view");
         final List<PriorKnowledge> tops = grools.getTopsPriorKnowledges()
                                                .stream()
                                                .sorted( (a,b) -> a.getName().compareTo( b.getName() ) )
                                                .collect(Collectors.toList());
-        final GraphWriter graph = new GraphWriter( cli.getArgs()[1] );
-        for( final PriorKnowledge top : tops ) {
-            graph.addGraph( top, grools.getSubGraph( top ) );
+        GraphWriter graph = null;
+        try {
+            graph = new GraphWriter( cli.getArgs()[1] );
+        } catch (Exception e) {
+            LOGGER.error("while creating reporting into: "+cli.getArgs()[1]);
+            System.exit(1);
         }
-        graph.close();
+        for( final PriorKnowledge top : tops ) {
+            try {
+                graph.addGraph( top, grools.getSubGraph( top ) );
+            } catch (Exception e) {
+                LOGGER.error("while creating reporting : " + top.getName());
+                System.exit(1);
+            }
+        }
+        try {
+            graph.close();
+        } catch (IOException e) {
+            LOGGER.error("Error while closing reporting : " + cli.getArgs()[1]);
+            System.exit(1);
+        }
+
+        LOGGER.info("  - CSV view");
+        FileWriter fileWriter = null;
+        CSVPrinter csvPrinter = null;
+        final String     csvPath = Paths.get(cli.getArgs()[1],"result.csv").toString();
+        final Object[]   header     = {"Name", "Label", "Source", "Description", "Type", "Prediction", "Expectation", "Conclusion"};
+        try {
+            fileWriter = new FileWriter( csvPath );
+            csvPrinter = new CSVPrinter( fileWriter, format);
+        } catch (IOException e) {
+            LOGGER.error("while creating csv file : " + csvPath);
+            System.exit(1);
+        }
+        try {
+            csvPrinter.printRecord(header);
+
+            for( final Concept concept : grools.getConcepts() ){
+                final List<Object> records = new ArrayList<>();
+                records.add(concept.getName());
+                records.add(concept.getLabel());
+                records.add(concept.getSource());
+                records.add(concept.getDescription());
+                if( concept instanceof Observation){
+                    final Observation o = (Observation)concept;
+                    records.add( o.getType() );
+                    switch ( o.getType() ){
+                        case COMPUTATION:       records.add(o.getTruthValue() ) ; records.add("NA"); break;
+                        case ANNOTATION:        records.add(o.getTruthValue() ) ; records.add(o.getTruthValue()); break;
+                        case EXPERIMENTATION:   records.add("NA")               ; records.add(o.getTruthValue() );break;
+                        default:
+                            LOGGER.warn("Unsupported observation type: "+o.getType());
+                    }
+                    records.add("NA");
+                }
+                else if( concept instanceof PriorKnowledge){
+                    final PriorKnowledge pk = (PriorKnowledge) concept;
+                    records.add( "PriorKnowledge" );
+                    records.add( pk.getPrediction() );
+                    records.add( pk.getExpectation() );
+                    records.add( pk.getConclusion() );
+                }
+                else
+                    LOGGER.warn("Unsupported type: " + concept.getClass() );
+                csvPrinter.printRecord(records);
+            }
+            fileWriter.close();
+            csvPrinter.close();
+        } catch (IOException e) {
+            LOGGER.error("while inserting records into csv file : " + csvPath);
+            System.exit(1);
+        }
     }
 }
