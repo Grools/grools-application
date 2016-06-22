@@ -397,7 +397,7 @@ public class Main {
                 }
                 else if( concept instanceof PriorKnowledge){
                     final PriorKnowledge pk = (PriorKnowledge) concept;
-                    records.add( "PriorKnowledge" );
+                    records.add( "PRIOR KNOWLEDGE" );
                     records.add( pk.getPrediction() );
                     records.add( pk.getExpectation() );
                     records.add( pk.getConclusion() );
