@@ -41,21 +41,40 @@ import fr.cea.ig.genome_properties.model.ComponentEvidence;
 import fr.cea.ig.grools.Integrator;
 import fr.cea.ig.grools.Mode;
 import fr.cea.ig.grools.Reasoner;
+import fr.cea.ig.grools.Verbosity;
 import fr.cea.ig.grools.drools.ReasonerImpl;
 import fr.cea.ig.grools.fact.*;
 import fr.cea.ig.grools.genome_properties.GenomePropertiesIntegrator;
 import fr.cea.ig.grools.logic.TruthValue;
+import fr.cea.ig.grools.obo.OboIntegrator;
 import fr.cea.ig.grools.svg.GraphWriter;
+import fr.cea.ig.io.model.obo.UPA;
+import fr.cea.ig.io.parser.OboParser;
 import lombok.NonNull;
-import org.apache.commons.cli.*;
+import org.apache.commons.cli.CommandLine;
+import org.apache.commons.cli.CommandLineParser;
+import org.apache.commons.cli.DefaultParser;
+import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.Options;
+import org.apache.commons.cli.ParseException;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.LoggerFactory;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.Reader;
 import java.nio.file.Paths;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
@@ -112,23 +131,23 @@ public class Main {
                 System.exit( 0 );
             }
             else if( ! cli.hasOption( "unipathway" ) &&  ! cli.hasOption( "genome-properties" ) ){
-                LOGGER.error( "Error: unipathway or genome-properties options need to be provided!" );
+                LOGGER.error( "Unipathway or genome-properties options need to be provided!" );
                 showHelp( options );
                 System.exit( 1 );
             }
             else if( cli.hasOption( "unipathway" ) &&  cli.hasOption( "genome-properties" ) ){
-                LOGGER.error( "Error: unipathway and genome-properties options are mutually exclusive" );
+                LOGGER.error( "Unipathway and genome-properties options are mutually exclusive" );
                 showHelp( options );
                 System.exit( 1 );
             }
             else if( cli.hasOption( "dispensable" ) &&  cli.hasOption( "specific" ) ){
-                LOGGER.error( "Error: dispensable and specific options are mutually exclusive" );
+                LOGGER.error( "Dispensable and specific options are mutually exclusive" );
                 showHelp( options );
                 System.exit( 1 );
             }
             else if( cli.getArgs().length != 2 ){
-                LOGGER.error( "Error: One csv well formatted is expected!" );
-                LOGGER.error( "Error: One output directory is expected!" );
+                LOGGER.error( "A csv well formatted is expected!" );
+                LOGGER.error( "A One output directory is expected!" );
                 showHelp( options );
                 System.exit( 1 );
             }
@@ -179,8 +198,8 @@ public class Main {
         return isPresent;
     }
 
-    private static Set<PriorKnowledge> evidenceForToPriorKnowledge( final String evidenceFor, final Integrator integrator ){
-        final Set<PriorKnowledge> pks = integrator.getPriorKnowledgeRelatedToObservationNamed( evidenceFor );
+    private static Set<PriorKnowledge> evidenceForToPriorKnowledge( final String evidenceFor, final String source, final Integrator integrator ){
+        final Set<PriorKnowledge> pks = integrator.getPriorKnowledgeRelatedToObservationNamed( source, evidenceFor );
         if( pks == null || pks.size() == 0)
             LOGGER.warn( "Unknown prior-knowledge "+ evidenceFor);
         return pks;
@@ -247,6 +266,7 @@ public class Main {
 
 
         //args = new String[]{ "-f", "-g", "/home/jmercier/UP000000625.csv", "test_reporting1"}; // for debug purpose
+        //args = new String[]{ "-u", "36.csv", "test_reporting2"}; // for debug purpose
         final CommandLine   cli     = parseArgs( args );
         Reader              in      = null;
         Iterable<CSVRecord> lines   = null;
@@ -297,9 +317,24 @@ public class Main {
 
 
         LOGGER.info("Generating concept graph...");
-        final Reasoner      grools  = new ReasonerImpl( mode );
+        final Reasoner      grools  = new ReasonerImpl( mode, Verbosity.HIGHT );
         String input = null;
         if( cli.hasOption( "unipathway" ) ) {
+            if( cli.hasOption( "input") )
+                try {
+                    integrator = new OboIntegrator( grools, new File(cli.getOptionValue("input") ), "user resources" );
+                } catch (Exception e) {
+                    LOGGER.error("Error while reading: "+cli.getOptionValue("input"));
+                    System.exit(1);
+                }
+            else {
+                try {
+                    integrator = new OboIntegrator(grools);
+                } catch (Exception e) {
+                    LOGGER.error("Error while reading: internal obo file");
+                    System.exit(1);
+                }
+            }
             input = "unipathway";
         }
         else if( cli.hasOption( "genome-properties" ) ){
@@ -326,18 +361,30 @@ public class Main {
             System.exit( 1 );
         }
 
-        LOGGER.info("Inserting observation...");
-        assert integrator != null;
         integrator.integration(  );
+        // unipathway has inconsitent use of super pathway and isA terms. To avoid loops we remove super pathway terms.
+        if( cli.hasOption( "unipathway" ) ) {
+            final OboIntegrator oboIntegrator = (OboIntegrator)integrator;
+            final OboParser     oboParser     = oboIntegrator.getOboParser();
+            final List<UPA>     pathways      = oboParser.getPathways();
+            final Set<PriorKnowledge> superpathways = pathways.stream()
+                    .filter( upa  -> upa.getSuperPathway() != null )
+                    .map( upa  -> upa.getSuperPathway().getIdLeft() )
+                    .map( id   -> grools.getPriorKnowledge(id) )
+                    .collect( Collectors.toSet() );
+            grools.delete(superpathways);
+        }
+
+        LOGGER.info("Inserting observation...");
 
         for( final CSVRecord line : lines){
             final String                label       = line.get( "Label" );
-            final Set<PriorKnowledge>   evidenceFor = evidenceForToPriorKnowledge( line.get( "EvidenceFor" ), integrator );
             final ObservationType       obsType     = observationTypeStrToObservationType(line.get( "Type" ));
             final TruthValue            isPresent   = isPresentStrToTruthValue( line.get( "isPresent" ) );
             final String                source      = line.get( "Source" );
             final String                name        = line.get( "Name" );
             final String                description = line.get( "Description" );
+            final Set<PriorKnowledge>   evidenceFor = evidenceForToPriorKnowledge( line.get( "EvidenceFor" ), source, integrator );
 
             if( evidenceFor != null ){
                 for( final PriorKnowledge pk : evidenceFor ) {
@@ -371,10 +418,42 @@ public class Main {
         grools.reasoning();
 
         LOGGER.info("Reporting...");
-        final List<PriorKnowledge> tops = grools.getTopsPriorKnowledges()
-                                               .stream()
-                                               .sorted( (a,b) -> a.getName().compareTo( b.getName() ) )
-                                               .collect(Collectors.toList());
+        List<PriorKnowledge> tops = null;
+        if( cli.hasOption( "unipathway" ) ) {
+            final OboIntegrator oboIntegrator = (OboIntegrator)integrator;
+            final OboParser     oboParser     = oboIntegrator.getOboParser();
+            final List<UPA>     pathways      = oboParser.getPathways();
+            final Set<UPA>      isA           = pathways.stream()
+                                                        .filter( upa  -> upa.getIsA() != null )
+                                                        .map(upa -> upa.getIsA().stream().map(rel -> rel.getIdLeft()).collect(Collectors.toSet()))
+                                                        .flatMap(Collection::stream)
+                                                        .map( id   -> (UPA) oboParser.getTerm(id) )
+                                                        .collect(Collectors.toSet());
+            final Set<UPA>      others        = pathways.stream()
+                                                        .filter( upa -> grools.getRelationsWithSource(grools.getPriorKnowledge(upa.getId())).isEmpty() )
+                                                        .collect(Collectors.toSet());
+            final List<PriorKnowledge> topsTMP = new ArrayList<>(isA.size() + others.size() );
+
+
+            isA.stream()
+               .map( upa -> grools.getPriorKnowledge(upa.getId()) )
+               .collect( Collectors.toCollection(() -> topsTMP ) );
+            others.stream()
+                  .map( upa -> grools.getPriorKnowledge(upa.getId()) )
+                  .collect( Collectors.toCollection(() -> topsTMP ) );
+            tops = topsTMP;
+
+        }
+        else if( cli.hasOption( "genome-properties" ) )
+            tops = grools.getTopsPriorKnowledges()
+                         .stream()
+                         .sorted( (a,b) -> a.getName().compareTo( b.getName() ) )
+                         .collect(Collectors.toList());
+        else{
+            LOGGER.error( "Any models was choosen [unipathway/genome-properties]!" );
+            System.exit( 1 );
+        }
+
         GraphWriter graph = null;
         final Object[] header = {"Name", "Label", "Source", "Description", "Type", "Prediction", "Expectation", "Conclusion"};
 
