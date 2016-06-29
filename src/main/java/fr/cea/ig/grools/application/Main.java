@@ -43,14 +43,16 @@ import fr.cea.ig.grools.Mode;
 import fr.cea.ig.grools.Reasoner;
 import fr.cea.ig.grools.Verbosity;
 import fr.cea.ig.grools.drools.ReasonerImpl;
-import fr.cea.ig.grools.fact.*;
+import fr.cea.ig.grools.fact.Observation;
+import fr.cea.ig.grools.fact.ObservationImpl;
+import fr.cea.ig.grools.fact.ObservationType;
+import fr.cea.ig.grools.fact.PriorKnowledge;
+import fr.cea.ig.grools.fact.Relation;
+import fr.cea.ig.grools.fact.RelationImpl;
 import fr.cea.ig.grools.genome_properties.GenomePropertiesIntegrator;
 import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.obo.OboIntegrator;
 import fr.cea.ig.grools.svg.GraphWriter;
-import fr.cea.ig.io.model.obo.UPA;
-import fr.cea.ig.io.parser.OboParser;
-import lombok.NonNull;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
@@ -58,20 +60,15 @@ import org.apache.commons.cli.HelpFormatter;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.csv.CSVFormat;
-import org.apache.commons.csv.CSVPrinter;
 import org.apache.commons.csv.CSVRecord;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
-import java.io.FileWriter;
 import java.io.IOException;
 import java.io.Reader;
-import java.nio.file.Paths;
-import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -216,40 +213,6 @@ public class Main {
                               .build();
     }
 
-    private static void writeRecords(@NonNull final CSVPrinter csvPrinter, @NonNull final Concept concept){
-        final List<Object> records = new ArrayList<>();
-        records.add(concept.getName());
-        records.add(concept.getLabel());
-        records.add(concept.getSource());
-        records.add(concept.getDescription());
-        if( concept instanceof Observation){
-            final Observation o = (Observation)concept;
-            records.add( o.getType() );
-            switch ( o.getType() ){
-                case COMPUTATION:       records.add(o.getTruthValue() ) ; records.add("NA"); break;
-                case ANNOTATION:        records.add(o.getTruthValue() ) ; records.add(o.getTruthValue()); break;
-                case EXPERIMENTATION:   records.add("NA")               ; records.add(o.getTruthValue() );break;
-                default:
-                    LOGGER.warn("Unsupported observation type: "+o.getType());
-            }
-            records.add("NA");
-        }
-        else if( concept instanceof PriorKnowledge){
-            final PriorKnowledge pk = (PriorKnowledge) concept;
-            records.add( "PRIOR KNOWLEDGE" );
-            records.add( pk.getPrediction() );
-            records.add( pk.getExpectation() );
-            records.add( pk.getConclusion() );
-        }
-        else
-            LOGGER.warn("Unsupported type: " + concept.getClass() );
-        try {
-            csvPrinter.printRecord(records);
-        } catch (IOException e) {
-            LOGGER.error("while inserting records : \n" + concept);
-            System.exit(1);
-        }
-    }
 
     public static void main( String[] args ) {
 //        final Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -362,19 +325,6 @@ public class Main {
         }
 
         integrator.integration(  );
-        // unipathway has inconsitent use of super pathway and isA terms. To avoid loops we remove super pathway terms.
-        if( cli.hasOption( "unipathway" ) ) {
-            final OboIntegrator oboIntegrator = (OboIntegrator)integrator;
-            final OboParser     oboParser     = oboIntegrator.getOboParser();
-            final List<UPA>     pathways      = oboParser.getPathways();
-            final Set<PriorKnowledge> superpathways = pathways.stream()
-                    .filter( upa  -> upa.getSuperPathway() != null )
-                    .map( upa  -> upa.getSuperPathway().getIdLeft() )
-                    .map( id   -> grools.getPriorKnowledge(id) )
-                    .collect( Collectors.toSet() );
-            grools.delete(superpathways);
-        }
-
         LOGGER.info("Inserting observation...");
 
         for( final CSVRecord line : lines){
@@ -397,10 +347,10 @@ public class Main {
         }
 
         if( cli.hasOption( "falsehood" )) {
-            if( ! cli.hasOption("genome-properties") ){
-                LOGGER.error( "falsehood option can be used only with genome-properties option!" );
-                System.exit( 1 );
-            }
+//            if( ! cli.hasOption("genome-properties") ){
+//                LOGGER.error( "falsehood option can be used only with genome-properties option!" );
+//                System.exit( 1 );
+//            }
             priorKnowledgeLeaves = grools.getLeavesPriorKnowledges();
             priorKnowledgeLeaves.removeAll( observationRelatedTo );
             for ( final PriorKnowledge leaf : priorKnowledgeLeaves ) {
@@ -421,27 +371,14 @@ public class Main {
         List<PriorKnowledge> tops = null;
         if( cli.hasOption( "unipathway" ) ) {
             final OboIntegrator oboIntegrator = (OboIntegrator)integrator;
-            final OboParser     oboParser     = oboIntegrator.getOboParser();
-            final List<UPA>     pathways      = oboParser.getPathways();
-            final Set<UPA>      isA           = pathways.stream()
-                                                        .filter( upa  -> upa.getIsA() != null )
-                                                        .map(upa -> upa.getIsA().stream().map(rel -> rel.getIdLeft()).collect(Collectors.toSet()))
-                                                        .flatMap(Collection::stream)
-                                                        .map( id   -> (UPA) oboParser.getTerm(id) )
-                                                        .collect(Collectors.toSet());
-            final Set<UPA>      others        = pathways.stream()
-                                                        .filter( upa -> grools.getRelationsWithSource(grools.getPriorKnowledge(upa.getId())).isEmpty() )
-                                                        .collect(Collectors.toSet());
-            final List<PriorKnowledge> topsTMP = new ArrayList<>(isA.size() + others.size() );
-
-
-            isA.stream()
-               .map( upa -> grools.getPriorKnowledge(upa.getId()) )
-               .collect( Collectors.toCollection(() -> topsTMP ) );
-            others.stream()
-                  .map( upa -> grools.getPriorKnowledge(upa.getId()) )
-                  .collect( Collectors.toCollection(() -> topsTMP ) );
-            tops = topsTMP;
+            tops = grools.getRelations()
+                         .stream()
+                         .filter( rel -> rel.getSource() instanceof PriorKnowledge )
+                         .filter( rel -> rel.getTarget() instanceof PriorKnowledge )
+                         .filter( rel -> (rel.getSource().getName().startsWith("ULS")|| rel.getSource().getName().startsWith("variant")) )
+                         .filter( rel -> rel.getTarget().getName().startsWith("UPA") )
+                         .map(rel -> (PriorKnowledge)rel.getTarget() )
+                         .collect( Collectors.toList());
 
         }
         else if( cli.hasOption( "genome-properties" ) )
@@ -455,39 +392,19 @@ public class Main {
         }
 
         GraphWriter graph = null;
-        final Object[] header = {"Name", "Label", "Source", "Description", "Type", "Prediction", "Expectation", "Conclusion"};
-
         try {
             graph = new GraphWriter( cli.getArgs()[1] );
         } catch (Exception e) {
             LOGGER.error("while creating reporting into: "+cli.getArgs()[1]);
             System.exit(1);
         }
+
         for( final PriorKnowledge top : tops ) {
-            Set<Relation> relations = grools.getSubGraph( top );
+            final Set<Relation> relations = grools.getSubGraph( top );
             try {
                 graph.addGraph( top, relations );
             } catch (Exception e) {
                 LOGGER.error("while creating reporting : " + top.getName());
-                System.exit(1);
-            }
-            // write csv
-            FileWriter fileWriter = null;
-            CSVPrinter csvPrinter = null;
-            final String     csvPath = Paths.get(cli.getArgs()[1],top.getName(),"result.csv").toString();
-            try {
-                fileWriter = new FileWriter( csvPath );
-                csvPrinter = new CSVPrinter( fileWriter, format);
-                csvPrinter.printRecord(header);
-
-                for( final Relation relation : relations ){
-                    writeRecords( csvPrinter, relation.getSource());
-                    writeRecords( csvPrinter, relation.getTarget());
-                }
-                fileWriter.close();
-                csvPrinter.close();
-            } catch (IOException e) {
-                LOGGER.error("while writing csv file : " + csvPath);
                 System.exit(1);
             }
         }
@@ -497,6 +414,5 @@ public class Main {
             LOGGER.error("Error while closing reporting : " + cli.getArgs()[1]);
             System.exit(1);
         }
-
     }
 }
