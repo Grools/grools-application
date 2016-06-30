@@ -41,7 +41,7 @@ Name;EvidenceFor;Type;isPresent;Source;Label;Description
 
 ## Build
 
-Grools-application rrequire to pre-install some libraries:
+Grools-application require to pre-install some libraries:
 - [grools-checker](https://github.com/Grools/grools-checker)
 - [grools-drools-checker](https://github.com/Grools/grools-drools-checker)
 - [genome-properties-model](https://github.com/institut-de-genomique/genome-properties-model)
