@@ -1,18 +1,18 @@
-== GROOLS Application ==
+# GROOLS Application
 
 GROOLS is a powerfull reasoner to deal with uncertainties and contradiction. This application is a standalone tools to show a possible usage of GROOLS API.
 
-== Biology ==
+## Biology
 GROOLS is applied here on biology and bioinformatics fields. Indeed in biology we have a lot of uncertainties. We propose here two different knowledge models:
  - GenomeProperties from J. Craig Venter Institute
  - Unipathway from SwissProt
 
-=== Scripts ===
+### Scripts
 As example of usage we made two shell scripts that grab data from Microscope Platform and Uniprot.
 Predicted prior-knowledge are tooks from Uniprot for genome properties knowlede model.
 Predicted prior-knowledge are tooks from Microscope for unipathway knwoledge model.
 
-=== Usage ===
+### Usage
 Shell scripts are  easy to use. Once grools-application is build, you have to provide:
 - the path to the jar file
 - organism/proteome number
@@ -25,12 +25,12 @@ Shell scripts are  easy to use. Once grools-application is build, you have to pr
 ./scripts/microscopeTogrools.sh -g grools-application-1.0.0.jar 36 ~/expectation.csv
 ```
 
-== CSV format ==
+## CSV format
 The file need start with the corresponding header:
 ```csv
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
 ```
-=== Fields ===
+### Fields
 - Name: is a unique string usable as an id
 - EvidenceFor: is the name to related prior-knowledge
 - Type: ANNOTATION,EXPECTATION,COMPUATATION
@@ -39,7 +39,7 @@ Name;EvidenceFor;Type;isPresent;Source;Label;Description
 - Label: A strings fields
 - Description: An description of the given observation. This is displayed on the user interface.
 
-== Build ==
+## Build
 
 Grools-application rrequire to pre-install some libraries:
 - [grools-checker](https://github.com/Grools/grools-checker)
