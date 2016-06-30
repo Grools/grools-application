@@ -81,4 +81,4 @@ pushd grools-application
 popd
 ```
 
-The executable jar file will be located into build/libs/ directory
+The executable jar file will be located into `build/libs/` directory
