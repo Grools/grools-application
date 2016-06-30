@@ -77,7 +77,7 @@ runner="gradle"
 if command -v "${runner}"  2>&1; then
     echo 'Using gradle'
 else
-    runner='./gradlew"
+    runner='./gradlew'
     echo 'Using gradlew'
 fi
 
