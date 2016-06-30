@@ -53,10 +53,12 @@ Grools-application require to pre-install some libraries:
 - [grools-checker-obo](https://github.com/Grools/grools-checker-obo)
 - [grools-checker-reporter](https://github.com/Grools/grools-checker-reporter)
 
-These projects use the powerfull Gradle as build system. If you do not have or you can not install it.
-Instead of `gradle` use the corresponfing wrapper on each projects:
+These projects use the powerful Gradle as build system. If you do not have or you can not install it.
+Instead of `gradle` use the corresponding wrapper on each projects:
 - gradlew for unix
 - gradlew.bat for windows
+
+### Install script
 
 ```bash
 projects=(grools-checker grools-drools-checker genome-properties-model genome-properties-parser grools-checker-genome-properties obo-model obo-parser grools-checker-obo grools-checker-reporter)
@@ -70,9 +72,20 @@ git clone https://github.com/institut-de-genomique/obo-parser
 git clone https://github.com/Grools/grools-checker-obo
 git clone https://github.com/Grools/grools-checker-reporter
 
+command -v dot >/dev/null 2>&1 || { echo >&2 "I require dot but it's not installed.  Aborting."; exit 1; }
+runner="gradle"
+if command -v "${runner}"  2>&1; then
+    echo 'Using gradle'
+else
+    runner='./gradlew"
+    echo 'Using gradlew'
+fi
+
+if command -d gradle >/dev/null 2>&1; then
+
 for project in "${projects[@]}"; do
     pushd ${project}
-      gradle clean build install
+      ${runner} clean build install
     popd
 done
 
