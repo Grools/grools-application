@@ -26,7 +26,7 @@ Shell scripts are  easy to use. Once grools-application is build, you have to pr
 ```
 
 ## CSV format
-The file need start with the corresponding header:
+The file need to start with the corresponding header:
 ```csv
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
 ```
