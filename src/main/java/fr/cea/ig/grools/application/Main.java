@@ -217,7 +217,8 @@ public class Main {
     public static void main( String[] args ) {
 //        final Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
 //        root.setLevel( Level.OFF );
-        final Set<PriorKnowledge> observationRelatedTo  = new HashSet<>(  );
+        final Set<PriorKnowledge> observationRelatedTo   = new HashSet<>(  );
+        final Set<PriorKnowledge> expectedPriorKnowledge = new HashSet<>(  );
         final Set<PriorKnowledge> priorKnowledgeLeaves;
 
         final  CSVFormat format = CSVFormat.RFC4180
@@ -342,6 +343,8 @@ public class Main {
                     final Relation relation = new RelationImpl( o, pk );
                     grools.insert( o, relation );
                     observationRelatedTo.add( pk );
+                    if( o.getType() == ObservationType.ANNOTATION || o.getType() == ObservationType.EXPERIMENTATION )
+                        expectedPriorKnowledge.add(pk);
                 }
             }
         }
@@ -370,7 +373,6 @@ public class Main {
         LOGGER.info("Reporting...");
         List<PriorKnowledge> tops = null;
         if( cli.hasOption( "unipathway" ) ) {
-            final OboIntegrator oboIntegrator = (OboIntegrator)integrator;
             tops = grools.getRelations()
                          .stream()
                          .filter( rel -> rel.getSource() instanceof PriorKnowledge )
@@ -379,13 +381,16 @@ public class Main {
                          .filter( rel -> rel.getTarget().getName().startsWith("UPA") )
                          .map(rel -> (PriorKnowledge)rel.getTarget() )
                          .collect( Collectors.toList());
+            tops.addAll(expectedPriorKnowledge);
 
         }
-        else if( cli.hasOption( "genome-properties" ) )
+        else if( cli.hasOption( "genome-properties" ) ) {
             tops = grools.getTopsPriorKnowledges()
                          .stream()
-                         .sorted( (a,b) -> a.getName().compareTo( b.getName() ) )
+                         .sorted((a, b) -> a.getName().compareTo(b.getName()))
                          .collect(Collectors.toList());
+            tops.addAll(expectedPriorKnowledge);
+        }
         else{
             LOGGER.error( "Any models was choosen [unipathway/genome-properties]!" );
             System.exit( 1 );
