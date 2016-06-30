@@ -52,7 +52,7 @@ import fr.cea.ig.grools.fact.RelationImpl;
 import fr.cea.ig.grools.genome_properties.GenomePropertiesIntegrator;
 import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.obo.OboIntegrator;
-import fr.cea.ig.grools.svg.GraphWriter;
+import fr.cea.ig.grools.reporter.GraphWriter;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;

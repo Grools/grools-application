@@ -75,7 +75,7 @@ dependencies {
     compile     group: 'org.projectlombok'  , name: 'lombok'                            , version: lombokVersion
     compile     group: theGroup             , name: 'grools-checker-genome-properties'  , version: genomePropertiesVersion
     compile     group: theGroup             , name: 'grools-checker-obo'                , version: oboVersion
-    compile     group: theGroup             , name: 'grools-checker-svg'                , version: checkerSVGVersion
+    compile     group: theGroup             , name: 'grools-checker-reporter'           , version: checkerReporterVersion
     compile     group: 'commons-cli'        , name: 'commons-cli'                       , version: commonsCliVersion
     compile     group: 'org.apache.commons' , name: 'commons-csv'                       , version: commonsCSVVersion
     compile     group: 'ch.qos.logback'     , name: 'logback-classic'                   , version: logbackVersion

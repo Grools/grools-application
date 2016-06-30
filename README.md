@@ -50,7 +50,7 @@ Grools-application require to pre-install some libraries:
 - [obo-model](https://github.com/institut-de-genomique/obo-model)
 - [obo-parser](https://github.com/institut-de-genomique/obo-parser)
 - [grools-checker-obo](https://github.com/Grools/grools-checker-obo)
-- [grools-checker-svg](https://github.com/Grools/grools-checker-svg)
+- [grools-checker-reporter](https://github.com/Grools/grools-checker-reporter)
 
 These projects use the powerfull Gradle as build system. If you do not have or you can not install it.
 Instead of `gradle` use the corresponfing wrapper on each projects:
@@ -58,7 +58,7 @@ Instead of `gradle` use the corresponfing wrapper on each projects:
 - gradlew.bat for windows
 
 ```bash
-projects=(grools-checker grools-drools-checker genome-properties-model genome-properties-parser grools-checker-genome-properties obo-model obo-parser grools-checker-obo grools-checker-svg)
+projects=(grools-checker grools-drools-checker genome-properties-model genome-properties-parser grools-checker-genome-properties obo-model obo-parser grools-checker-obo grools-checker-reporter)
 git clone https://github.com/Grools/grools-checker
 git clone https://github.com/Grools/grools-drools-checker
 git clone https://github.com/institut-de-genomique/genome-properties-model
@@ -67,7 +67,7 @@ git clone https://github.com/Grools/grools-checker-genome-properties
 git clone https://github.com/institut-de-genomique/obo-model
 git clone https://github.com/institut-de-genomique/obo-parser
 git clone https://github.com/Grools/grools-checker-obo
-git clone https://github.com/Grools/grools-checker-svg
+git clone https://github.com/Grools/grools-checker-reporter
 
 for project in "${projects[@]}"; do
     pushd ${project}
