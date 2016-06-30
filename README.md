@@ -58,54 +58,27 @@ Instead of `gradle` use the corresponfing wrapper on each projects:
 - gradlew.bat for windows
 
 ```bash
+projects=(grools-checker grools-drools-checker genome-properties-model genome-properties-parser grools-checker-genome-properties obo-model obo-parser grools-checker-obo grools-checker-svg)
 git clone https://github.com/Grools/grools-checker
-pushd grools-checker
-  gradle clean build install
-popd
-
 git clone https://github.com/Grools/grools-drools-checker
-pushd grools-drools-checker
-  gradle clean build install
-popd
-
 git clone https://github.com/institut-de-genomique/genome-properties-model
-pushd genome-properties-model
-  gradle clean build install
-popd
-
 git clone https://github.com/institut-de-genomique/genome-properties-parser
-pushd  genome-properties-parser
-  gradle clean build install
-popd
-
 git clone https://github.com/Grools/grools-checker-genome-properties
-pushd  grools-checker-genome-properties
-  gradle clean build install
-popd
-
-
 git clone https://github.com/institut-de-genomique/obo-model
-pushd obo-model
-  gradle clean build install
-popd
-
 git clone https://github.com/institut-de-genomique/obo-parser
-pushd obo-parser
-  gradle clean build install
-popd
-
 git clone https://github.com/Grools/grools-checker-obo
-pushd grools-checker-obo
-  gradle clean build install
-popd
-
 git clone https://github.com/Grools/grools-checker-svg
-pushd grools-checker-svg
-  gradle clean build install
-popd
+
+for project in "${projects[@]}"; do
+    pushd ${project}
+      gradle clean build install
+    popd
+done
 
 git clone https://github.com/Grools/grools-application
 pushd grools-application
   gradle clean shadowJar
 popd
 ```
+
+The executable jar file will be located into build/libs/ directory
