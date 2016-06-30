@@ -19,10 +19,10 @@ Shell scripts are  easy to use. Once grools-application is build, you have to pr
 - expectation list
 
 ```bash
-./scripts.uniprotTogrools.sh -g grools-application-1.0.0.jar UP000000625 ~/expectation.csv
+./scripts.uniprotTogrools.sh -g build/libs/grools-application-1.0.0.jar UP000000625 ~/expectation.csv
 ```
 ```bash
-./scripts/microscopeTogrools.sh -g grools-application-1.0.0.jar 36 ~/expectation.csv
+./scripts/microscopeTogrools.sh -g build/libs/grools-application-1.0.0.jar 36 ~/expectation.csv
 ```
 
 ## CSV format
