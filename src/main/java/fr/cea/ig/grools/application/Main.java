@@ -224,12 +224,13 @@ public class Main {
         final  CSVFormat format = CSVFormat.RFC4180
                 .withDelimiter( ';' )
                 .withRecordSeparator('\n')
+                .withQuote('"')
                 .withFirstRecordAsHeader();
 
         Integrator integrator = null;
 
 
-        //args = new String[]{ "-f", "-g", "/home/jmercier/UP000000625.csv", "test_reporting1"}; // for debug purpose
+        //args = new String[]{ "-f", "-g", "UP000000813.csv", "test_reporting1"}; // for debug purpose
         //args = new String[]{ "-u", "36.csv", "test_reporting2"}; // for debug purpose
         final CommandLine   cli     = parseArgs( args );
         Reader              in      = null;
@@ -387,6 +388,7 @@ public class Main {
         else if( cli.hasOption( "genome-properties" ) ) {
             tops = grools.getTopsPriorKnowledges()
                          .stream()
+                         .filter( a -> ! a.getName().equals(" ")) // genome properties test
                          .sorted((a, b) -> a.getName().compareTo(b.getName()))
                          .collect(Collectors.toList());
             tops.addAll(expectedPriorKnowledge);
