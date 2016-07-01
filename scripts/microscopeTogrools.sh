@@ -78,7 +78,7 @@ observation_writer(){
         name=${microscope_label}','${microscope_gene}
       fi
       description=${microscope_product}
-      echo ${label}';'${evidenceFor}';'${type}';'${isPresent}';'${source}';'${name}';'${description} >> "${file}"
+      echo '"'${label}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}'";"'${name}'";"'${description}'"' >> "${file}"
     done
   done <<< "${line}"
 }
@@ -93,7 +93,7 @@ grab_microscope_file(){
   local description=""
   local priorknowledges=""
   local -a Array
-  echo 'Name;EvidenceFor;Type;isPresent;Source;Label;Description' > "${output}"
+  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${output}"
   curl -Lso ${tmpDir}/${OId}.csv 'https://www.genoscope.cns.fr/agc/microscope/search/export.php?format=csv&part=all&S_id='${OId}
   {
     read
@@ -104,9 +104,9 @@ grab_microscope_file(){
       if [[ -z "${microscope_gene}" ]]; then
         microscope_gene='-'
       fi
-      observation_writer "${output}" "${microscope_ECnumber}" ',' 'EC' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
-      observation_writer "${output}" "${microscope_microCycRid}" '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
-      observation_writer "${output}" "${microscope_rheaRid}" '$' 'RHEA' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      observation_writer "${output}" "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      observation_writer "${output}" "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      observation_writer "${output}" "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}"
     done
   }< "${tmpDir}/${OId}.csv"
 }

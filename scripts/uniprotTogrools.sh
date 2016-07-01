@@ -63,7 +63,7 @@ grab_uniprot_file(){
   local description=""
   local priorknowledges=""
   local -a Array
-  echo 'Name;EvidenceFor;Type;isPresent;Source;Label;Description' > "${output}"
+  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${output}"
   curl -Lso ${tmpDir}/${proteome}.csv 'http://www.uniprot.org/uniprot/?query=proteome:'${proteome}'&format=tab&columns=id,database%28Pfam%29,database%28TIGRFAMS%29,genes,protein%20names'
   {
     read
@@ -85,7 +85,7 @@ grab_uniprot_file(){
           fi
           name=${entry}','${genes}
           description=${bio_function}
-          echo ${label}';'${evidenceFor}';'${type}';'${isPresent}';'${source}';'${name}';'${description} >> "${output}"
+          echo '"'${label}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}'";"'${name}'";"'${description}'"' >> "${output}"
         done
       done <<< "${priorknowledges}"
     done
