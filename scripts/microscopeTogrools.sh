@@ -10,12 +10,14 @@ hasCustomOutput=false
 output=$(pwd)/organism_id.csv
 IFS_ORI="${IFS}"
 hasFalsehood=false
+hasSpecific=false
 
 show_help(){
   echo $"$0 [OPTIONS] organism_id expectation_file
   -h --help     display this help
   -v --version  version ${version}
   -f --falsehood enable falsehood mode
+  -s --specific enable specific GROOLS mode
   -o --output   path to store output result (default: ${output})
   -g --grools   path to grools-checker-genome-properties-application (default ${grools} )"
 }
@@ -32,6 +34,7 @@ argparse(){
       -h|--help)      show_help   ; exit;;
       -v|--version)   show_version; exit;;
       -f|--falsehood) hasFalsehood=true;;
+      -s|--specific)  hasSpecific=true;;
       -o|--output)    output=$2   ; hasCustomOutput=true; shift;;
       -g|--grools)    grools=$2   ;shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
@@ -48,7 +51,7 @@ argparse(){
   fi
   
   
-  if ! ${hasCustomOutput}; then
+  if [[ "${hasCustomOutput}" == false ]]; then
     output=$(pwd)'/'${OId}'.csv'
   fi
 }
@@ -131,10 +134,16 @@ tail -n +2 ${expectation_file} >> "${output}"
 
 dir_report=$(dirname "${output}")/"${OId}"
 
-if ${hasFalsehood}; then
-    java -jar ${grools} -f -u "${output}" "${dir_report}"
-else
-    java -jar ${grools} -u "${output}" "${dir_report}"
+grools_opt='-u'
+
+if [[ "${hasFalsehood}" == true ]]; then
+    grools_opt=${grools_opt}' -f'
 fi
+
+if [[ "${hasSpecific}" == true ]]; then
+    grools_opt=${grools_opt}' -s'
+fi
+
+java -jar ${grools} ${grools_opt} "${output}" "${dir_report}"
 
 echo "Visualize results ${dir_report}/index.html"
