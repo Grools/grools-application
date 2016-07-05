@@ -67,15 +67,15 @@ write_expectation(){
             label=${genprop_nrj_source[${evidence}]}
             desc=${genprop_desc[${evidence}]}
             if [[ "${observation}" == "TRUE" ]]; then
-                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"T";"'${label}'";"'${desc}'"' >> "${output}"
+                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"T";"'${obs_source}'";"'${label}'";"'${desc}'"' >> "${output}"
             elif [[ "${observation}" == "FALSE" ]]; then
-                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"F";"'${label}'";"'${desc}'"' >> "${output}"
+                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"F";"'${obs_source}'";"'${label}'";"'${desc}'"' >> "${output}"
             elif [[ "${observation}" == "NA" ]]; then
-                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"T";"'${label}'";"'${desc}'"' >> "${output}"
+                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"T";"'${obs_source}'";"'${label}'";"'${desc}'"' >> "${output}"
                 ((counter++))
                 name_id=${name}'_'${counter}
                 ids[${name}]=${counter}
-                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"F";"'${label}'";"'${desc}'"' >> "${output}"
+                echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"F";"'${obs_source}'";"'${label}'";"'${desc}'"' >> "${output}"
             else
                 echo 'Error: biolog file is badly formatted. Unknown observation: '${observation} >&2
                 exit 1
