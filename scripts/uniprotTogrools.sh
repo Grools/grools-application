@@ -5,11 +5,11 @@ version='1.0.0'
 grools='./grools-application.jar'
 tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
 proteome=0
+proteome_file=""
 expectation_file=""
-hasCustomOutput=false
-output=$(pwd)/proteome_number.csv
+output="$(pwd)"
 IFS_ORI="${IFS}"
-hasFalsehood=false
+grools_opts=('-d' '-g')
 
 show_help(){
   echo $"$0 [OPTIONS] proteome_number expectation_file
@@ -29,11 +29,11 @@ show_version(){
 argparse(){
   while [[  $@ = -* ]]; do
     case "$1" in
-      -h|--help)      show_help   ; exit;;
-      -v|--version)   show_version; exit;;
-      -f|--falsehood) hasFalsehood=true;;
-      -o|--output)    output=$2   ; hasCustomOutput=true; shift;;
-      -g|--grools)    grools=$2   ;shift;;
+      -h|--help)      show_help         ; exit;;
+      -v|--version)   show_version      ; exit;;
+      -f|--falsehood) grools_opts+=('-f') ;;
+      -o|--output)    output=$2         ; shift;;
+      -g|--grools)    grools=$2         ;shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift
@@ -47,9 +47,7 @@ argparse(){
     exit 1
   fi
   
-  if ! ${hasCustomOutput}; then
-    output=$(pwd)'/'${proteome}'.csv'
-  fi
+  proteome_file="${output}"'/'"${proteome}"'.csv'
 }
 
 
@@ -63,7 +61,7 @@ grab_uniprot_file(){
   local description=""
   local priorknowledges=""
   local -a Array
-  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${output}"
+  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${proteome_file}"
   curl -Lso ${tmpDir}/${proteome}.csv 'http://www.uniprot.org/uniprot/?query=proteome:'${proteome}'&format=tab&columns=id,database%28Pfam%29,database%28TIGRFAMS%29,genes,protein%20names'
   {
     read
@@ -85,7 +83,7 @@ grab_uniprot_file(){
           fi
           name=${entry}','${genes}
           description=${bio_function}
-          echo '"'${label}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}'";"'${name}'";"'${description}'"' >> "${output}"
+          echo '"'${label}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}'";"'${name}'";"'${description}'"' >> "${proteome_file}"
         done
       done <<< "${priorknowledges}"
     done
@@ -107,15 +105,11 @@ fi
 
 grab_uniprot_file
 
-tail -n +2 ${expectation_file} >> "${output}"
+tail -n +2 ${expectation_file} >> "${proteome_file}"
 
-dir_report=$(dirname "${output}")/"${proteome}"
+dir_report="${output}"
 
-if ${hasFalsehood}; then
-    java -jar ${grools} -d -f -g "${output}"  "${dir_report}"
-else
-    java -jar ${grools} -d -g "${output}"  "${dir_report}"
-fi
+java -jar ${grools} ${grools_opts[@]} ${proteome_file} ${output}
 
 echo "Visualize results ${dir_report}/index.html"
 
