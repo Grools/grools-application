@@ -43,7 +43,7 @@ write_expectation(){
     local biolog="$1"
     local output="$2"
     local name=''
-    local naime_id=''
+    local name_id=''
     local -i counter
     local evidence=''
     local -r obs_type='EXPERIMENTATION'
