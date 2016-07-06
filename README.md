@@ -44,10 +44,10 @@ Invoking the jar file with the option `-q` enable the query shell interpreter on
 It is a minimalist shell and command interpreter to display final state of values.
 Supported command are:
 ```
-get concept where name == xxx
-get concept where name != xxx
-get concept where source == xxx
-get concept where source != xxx
+get concepts where name == xxx
+get concepts where name != xxx
+get concepts where source == xxx
+get concepts where source != xxx
 
 get prior-knowledges where name == xxx
 get prior-knowledges where name != xxx
