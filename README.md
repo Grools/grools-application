@@ -42,6 +42,7 @@ This application require three parameters:
 ##### Query shell interpreter
 Invoking the jar file with the option `-q` enable the query shell interpreter once reasoning and reporting is done.
 It is a minimalist shell and command interpreter to display final state of values.
+
 Supported command are:
 ```
 > get [type] where [field] [symbol] [constraint]
