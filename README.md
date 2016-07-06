@@ -44,30 +44,24 @@ Invoking the jar file with the option `-q` enable the query shell interpreter on
 It is a minimalist shell and command interpreter to display final state of values.
 Supported command are:
 ```
-get concepts where name == xxx
-get concepts where name != xxx
-get concepts where source == xxx
-get concepts where source != xxx
-
-get prior-knowledges where name == xxx
-get prior-knowledges where name != xxx
-get prior-knowledges where source == xxx
-get prior-knowledges where source != xxx
-
-get relations where source == xxx
-get relations where source != xxx
-get relations where target == xxx
-get relations where target != xxx
-
-get observations where name == xxx
-get observations where name != xxx
-get observations where source == xxx
-get observations where source != xxx
-
-quit // to exit of course :-)
+> get [type] where [field] [symbol] [constraint]
+> quit
 ```
+Type:
+- concepts
+- prior-knowledges
+- relations
+- observations
 
+Field:
+- name
+- source
 
+Sybol:
+- `==`
+- `!=`
+
+Constraint: any id/name
 
 ## CSV format
 The file need to start with the corresponding header:
