@@ -70,6 +70,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
@@ -561,24 +562,26 @@ public class Main {
         LOGGER.info("Reporting...");
         List<PriorKnowledge> tops = null;
         if( cli.hasOption( "unipathway" ) ) {
-            tops = grools.getRelations()
-                         .stream()
-                         .filter( rel -> rel.getSource() instanceof PriorKnowledge )
-                         .filter( rel -> rel.getTarget() instanceof PriorKnowledge )
-                         .filter( rel -> (rel.getSource().getName().startsWith("ULS")|| rel.getSource().getName().startsWith("variant")) )
-                         .filter( rel -> rel.getTarget().getName().startsWith("UPA") )
-                         .map(rel -> (PriorKnowledge)rel.getTarget() )
-                         .collect( Collectors.toList());
-            tops.addAll(expectedPriorKnowledge);
-
+            final Set<PriorKnowledge> tmp = grools.getRelations()
+                                                 .stream()
+                                                 .filter( rel -> rel.getSource() instanceof PriorKnowledge )
+                                                 .filter( rel -> rel.getTarget() instanceof PriorKnowledge )
+                                                 .filter( rel -> (rel.getSource().getName().startsWith("ULS")|| rel.getSource().getName().startsWith("variant")) )
+                                                 .filter( rel -> rel.getTarget().getName().startsWith("UPA") )
+                                                 .map(rel -> (PriorKnowledge)rel.getTarget() )
+                                                 .collect( Collectors.toSet());
+            tmp.addAll(expectedPriorKnowledge);
+            tops = new ArrayList<>(tmp);
+            tops.sort((a,b) -> a.getName().compareTo(b.getName()));
         }
         else if( cli.hasOption( "genome-properties" ) ) {
-            tops = grools.getTopsPriorKnowledges()
+            final Set<PriorKnowledge> tmp = grools.getTopsPriorKnowledges()
                          .stream()
                          .filter( a -> ! a.getName().equals(" ")) // genome properties test
-                         .sorted((a, b) -> a.getName().compareTo(b.getName()))
-                         .collect(Collectors.toList());
-            tops.addAll(expectedPriorKnowledge);
+                         .collect(Collectors.toSet());
+            tmp.addAll(expectedPriorKnowledge);
+            tops = new ArrayList<>(tmp);
+            tops.sort((a,b) -> a.getName().compareTo(b.getName()));
         }
         else{
             LOGGER.error( "Any models was chosen [unipathway/genome-properties]!" );
