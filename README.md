@@ -68,6 +68,15 @@ Example:
 
 ```
 > get prior-knowledges where name == GenProp1071
+PriorKnowledge(
+    name                       = GenProp1071
+    source                     = Genome Properties v3.2
+    prediction                 = {{t},{f}}
+    expectation                = {{f}}
+    conclusion                 = CONFIRMED_ABSENCE
+    isDispensable              = false
+    isSpecific                 = false
+)
 ```
 
 ## CSV format
