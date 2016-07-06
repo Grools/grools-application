@@ -254,7 +254,7 @@ public class Main {
     private static void interpreter(@NonNull final Reasoner reasoner){
         boolean isRunning = true;
         final Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Query interpreter ===");
+        System.out.println("=== Query shell interpreter ===");
         System.out.println("Enter quit to leave");
         final Pattern query = Pattern.compile("get\\s+(\\w+[[\\-]?\\w+]*)\\s+where\\s+(\\w+)\\s+([=!]{2})\\s+(\\w+)");
         while ( isRunning ){

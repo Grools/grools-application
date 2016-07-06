@@ -13,6 +13,8 @@ Predicted prior-knowledge are tooks from Uniprot for genome properties knowlede 
 Predicted prior-knowledge are tooks from Microscope for unipathway knwoledge model.
 
 ### Usage
+
+#### From shell script
 Shell scripts are  easy to use. Once grools-application is build, you have to provide:
 - the path to the jar file
 - organism/proteome number
@@ -24,6 +26,46 @@ Shell scripts are  easy to use. Once grools-application is build, you have to pr
 ```bash
 ./scripts/microscopeTogrools.sh -g build/libs/grools-application-1.0.0.jar 36 ~/expectation.csv
 ```
+
+#### From jar file
+The application ca be launch directly with the jar file, as follow:
+```bash
+java -jar  build/libs/grools-application-1.0.0.jar [-u/-g] observations.csv results_dir/
+```
+
+This application require three parameters:
+- list of observations in well formatted csv file (see section CSV format)
+- a directory to save results
+- the option -g or -u need to be provided to let the reasoner took the right prior-knowledge model (genome properties or unipathway )
+
+
+##### Query shell interpreter
+Invoking the jar file with the option `-q` enable the query shell interpreter once reasoning and reporting is done.
+It is a minimalist shell and command interpreter to display final state of values.
+Supported command are:
+```
+get concept where name == xxx
+get concept where name != xxx
+get concept where source == xxx
+get concept where source != xxx
+
+get prior-knowledges where name == xxx
+get prior-knowledges where name != xxx
+get prior-knowledges where source == xxx
+get prior-knowledges where source != xxx
+
+get relations where source == xxx
+get relations where source != xxx
+get relations where target == xxx
+get relations where target != xxx
+
+get observations where name == xxx
+get observations where name != xxx
+get observations where source == xxx
+get observations where source != xxx
+```
+
+
 
 ## CSV format
 The file need to start with the corresponding header:
