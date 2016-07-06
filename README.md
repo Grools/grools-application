@@ -64,6 +64,12 @@ Sybol:
 
 Constraint: any id/name
 
+Example:
+
+```
+> get prior-knowledges where name == GenProp1071
+```
+
 ## CSV format
 The file need to start with the corresponding header:
 ```csv
