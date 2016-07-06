@@ -63,6 +63,8 @@ get observations where name == xxx
 get observations where name != xxx
 get observations where source == xxx
 get observations where source != xxx
+
+quit // to exit of course :-)
 ```
 
 
