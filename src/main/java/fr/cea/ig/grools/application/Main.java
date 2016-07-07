@@ -43,7 +43,6 @@ import fr.cea.ig.grools.Mode;
 import fr.cea.ig.grools.Reasoner;
 import fr.cea.ig.grools.Verbosity;
 import fr.cea.ig.grools.drools.ReasonerImpl;
-import fr.cea.ig.grools.fact.Concept;
 import fr.cea.ig.grools.fact.Observation;
 import fr.cea.ig.grools.fact.ObservationImpl;
 import fr.cea.ig.grools.fact.ObservationType;
@@ -74,10 +73,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Scanner;
 import java.util.Set;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -113,7 +109,6 @@ public class Main {
         options.addOption( "i", "input"             , true  , "use a external file to make prior-knowledge graph");
         options.addOption( "d", "dispensable"       , false , "Enable the mode dispensable");
         options.addOption( "s", "specific"          , false , "Enable the mode specific");
-        options.addOption( "q", "query"             , false , "Enable query shell interpreter");
 
         if (args.length < 1) {
             LOGGER.error( "Error: any parameter provided");
@@ -250,155 +245,6 @@ public class Main {
             result = false;
         }
         return  result;
-    }
-
-    private static void interpreter(@NonNull final Reasoner reasoner){
-        boolean isRunning = true;
-        final Scanner scanner = new Scanner(System.in);
-        System.out.println("=== Query shell interpreter ===");
-        System.out.println("Enter quit to leave");
-        final Pattern query = Pattern.compile("get\\s+(\\w+[[\\-]?\\w+]*)\\s+where\\s+(\\w+)\\s+([=!]{2})\\s+(\\w+)");
-        while ( isRunning ){
-            System.out.print("> ");
-            final String  input     = scanner.nextLine();
-            if( input.equals("quit") )
-                isRunning=false;
-            else{
-                final Matcher matcher   = query.matcher(input);
-                if( matcher.find() ) {
-                    if ( matcher.group(1).equals("concepts") ) {
-                        Set<Concept> concepts = null;
-                        if ( matcher.group(2).equals("name") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                concepts = new HashSet<>();
-                                concepts.add(reasoner.getConcept(matcher.group(4)));
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                concepts = reasoner.getConcepts().stream()
-                                                                 .filter(c -> ! c.getName().equals(matcher.group(4)))
-                                                                 .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else if ( matcher.group(2).equals("source") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                concepts = reasoner.getConcepts().stream()
-                                                   .filter(c -> c.getSource().equals(matcher.group(4)))
-                                                   .collect(Collectors.toSet());
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                concepts = reasoner.getConcepts().stream()
-                                                   .filter(c -> ! c.getSource().equals(matcher.group(4)))
-                                                   .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else {
-                            System.err.println("Unsupported query using field: " + matcher.group(2));
-                        }
-                        if( concepts == null || concepts.isEmpty() )
-                            System.out.println("Any concepts match the constrain");
-                        else
-                            concepts.stream().forEach(System.out::println);
-                    } else if ( matcher.group(1).equals("prior-knowledges") ) {
-                        Set<PriorKnowledge> priorKnowledges = null;
-                        if ( matcher.group(2).equals("name") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                priorKnowledges = new HashSet<>();
-                                priorKnowledges.add(reasoner.getPriorKnowledge(matcher.group(4)));
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                priorKnowledges = reasoner.getPriorKnowledges().stream()
-                                        .filter(pk -> pk.getName().equals(matcher.group(4)))
-                                                          .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else if ( matcher.group(2).equals("source") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                priorKnowledges = reasoner.getPriorKnowledges().stream()
-                                                          .filter(pk -> pk.getSource().equals(matcher.group(4)))
-                                                          .collect(Collectors.toSet());
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                priorKnowledges = reasoner.getPriorKnowledges().stream()
-                                                          .filter(pk -> ! pk.getSource().equals(matcher.group(4)))
-                                                          .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else {
-                            System.err.println("Unsupported query using field: " + matcher.group(2));
-                        }
-                        if( priorKnowledges == null || priorKnowledges.isEmpty() )
-                            System.out.println("Any prior-knowledges match the constrain");
-                        else
-                            priorKnowledges.stream().forEach(System.out::println);
-
-                    } else if ( matcher.group(1).equals("relations") ) {
-                        Set<Relation> relations = null;
-                        if ( matcher.group(2).equals("source") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                relations = reasoner.getRelations().stream()
-                                                    .filter(r -> r.getSource().getName().equals(matcher.group(4)))
-                                                    .collect(Collectors.toSet());
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                relations = reasoner.getRelations().stream()
-                                                    .filter(r -> ! r.getSource().getName().equals(matcher.group(4)))
-                                                    .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else if ( matcher.group(2).equals("target") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                relations = reasoner.getRelations().stream()
-                                                    .filter(r -> r.getTarget().getName().equals(matcher.group(4)))
-                                                    .collect(Collectors.toSet());
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                relations = reasoner.getRelations().stream()
-                                                    .filter(r -> ! r.getTarget().getName().equals(matcher.group(4)))
-                                                    .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else {
-                            System.err.println("Unsupported query using field: " + matcher.group(2));
-                        }
-                        if( relations == null || relations.isEmpty() )
-                            System.out.println("Any relations match the constrain");
-                        else
-                            relations.stream().forEach(System.out::println);
-
-                    } else if ( matcher.group(1).equals("observations") ) {
-                        Set<Observation> observations = null;
-                        if ( matcher.group(2).equals("name") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                observations = reasoner.getObservations().stream()
-                                                       .filter(o -> o.getName().equals(matcher.group(4)))
-                                                       .collect(Collectors.toSet());
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                observations = reasoner.getObservations().stream()
-                                                       .filter(o -> ! o.getName().equals(matcher.group(4)))
-                                                       .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else if ( matcher.group(2).equals("source") ) {
-                            if ( matcher.group(3).equals("==") ) {
-                                observations = reasoner.getObservations().stream()
-                                                       .filter(o -> o.getSource().equals(matcher.group(4)))
-                                                       .collect(Collectors.toSet());
-                            } else if ( matcher.group(3).equals("!=") ) {
-                                observations = reasoner.getObservations().stream()
-                                                       .filter(o -> ! o.getSource().equals(matcher.group(4)))
-                                                       .collect(Collectors.toSet());
-                            } else
-                                System.err.println("Unsupported query using symbol: " + matcher.group(3));
-                        } else {
-                            System.err.println("Unsupported query using field: " + matcher.group(2));
-                        }
-                        if( observations == null || observations.isEmpty() )
-                            System.out.println("Any relations match the constrain");
-                        else
-                            observations.stream().forEach(System.out::println);
-
-                    } else {
-                        System.err.println("Unsupported query using type: " + matcher.group(1));
-                    }
-                }
-                else
-                    System.err.println("Unsuported expression: "+input);
-            }
-        }
     }
 
     public static void main( String[] args ) {
@@ -611,9 +457,6 @@ public class Main {
             LOGGER.error("Error while closing reporting : " + cli.getArgs()[1]);
             System.exit(1);
         }
-
-        if( cli.hasOption( "query" ) )
-            interpreter(grools);
     }
 
 }
