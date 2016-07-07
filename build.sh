@@ -30,3 +30,11 @@ push build
 popd
 
 gradle clean shadowJar
+
+declare -ra jars=(build/libs/*.jar)
+
+echo 'Generated files:'
+
+for j in "${jars[@]]}"; do
+    echo "  - $j"
+done
