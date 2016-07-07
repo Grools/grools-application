@@ -107,10 +107,8 @@ grab_uniprot_file
 
 tail -n +2 ${expectation_file} >> "${proteome_file}"
 
-dir_report="${output}"
-
 java -jar ${grools} ${grools_opts[@]} ${proteome_file} ${output}
 
-echo "Visualize results $(readlink -m ${dir_report}/index.html)"
+echo "Visualize results $(readlink -m ${output}/index.html)"
 
 
