@@ -146,4 +146,4 @@ fi
 
 java -jar ${grools} ${grools_opt} "${output}" "${dir_report}"
 
-echo "Visualize results ${dir_report}/index.html"
+echo "Visualize results $(readlink -m ${dir_report}/index.html)"
