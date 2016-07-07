@@ -386,10 +386,10 @@ public class Main {
         }
 
         if( cli.hasOption( "falsehood" )) {
-//            if( ! cli.hasOption("genome-properties") ){
-//                LOGGER.error( "falsehood option can be used only with genome-properties option!" );
-//                System.exit( 1 );
-//            }
+            if( ! cli.hasOption("genome-properties") ){
+                LOGGER.error( "falsehood option can be used only with genome-properties option!" );
+                System.exit( 1 );
+            }
             priorKnowledgeLeaves = grools.getLeavesPriorKnowledges();
             priorKnowledgeLeaves.removeAll( observationRelatedTo );
             for ( final PriorKnowledge leaf : priorKnowledgeLeaves ) {
