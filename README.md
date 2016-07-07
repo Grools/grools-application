@@ -38,47 +38,6 @@ This application require three parameters:
 - a directory to save results
 - the option -g or -u need to be provided to let the reasoner took the right prior-knowledge model (genome properties or unipathway )
 
-
-##### Query shell interpreter
-Invoking the jar file with the option `-q` enable the query shell interpreter once reasoning and reporting is done.
-It is a minimalist shell and command interpreter to display final state of values.
-
-Supported command are:
-```
-> get [type] where [field] [symbol] [constraint]
-> quit
-```
-Type:
-- concepts
-- prior-knowledges
-- relations
-- observations
-
-Field:
-- name
-- source
-
-Sybol:
-- `==`
-- `!=`
-
-Constraint: any id/name
-
-Example:
-
-```
-> get prior-knowledges where name == GenProp1071
-PriorKnowledge(
-    name                       = GenProp1071
-    source                     = Genome Properties v3.2
-    prediction                 = {{t},{f}}
-    expectation                = {{f}}
-    conclusion                 = CONFIRMED_ABSENCE
-    isDispensable              = false
-    isSpecific                 = false
-)
-```
-
 ## CSV format
 The file need to start with the corresponding header:
 ```csv
