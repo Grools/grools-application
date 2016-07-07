@@ -91,12 +91,12 @@ fi
 
 argparse $@
 
-if [[ ! -e "$1" || ! -f "$1 " ]]; then
+if [[ ! -e "$1" || ! -f "$1" ]]; then
     echo 'Error File '"$1"' do not exists' >&2
     exit 1
 fi
 
-if [[ ! -e "$2" || ! -f "$2 " ]]; then
+if [[ ! -e "$2" || ! -f "$2" ]]; then
     echo 'Error File '"$2"' do not exists' >&2
     exit 1
 fi
