@@ -9,8 +9,7 @@ expectation_file=""
 hasCustomOutput=false
 output=$(pwd)/organism_id.csv
 IFS_ORI="${IFS}"
-hasFalsehood=false
-hasSpecific=false
+grools_opts=( '-u' )
 
 show_help(){
   echo $"$0 [OPTIONS] organism_id expectation_file
@@ -33,8 +32,8 @@ argparse(){
     case "$1" in
       -h|--help)      show_help   ; exit;;
       -v|--version)   show_version; exit;;
-      -f|--falsehood) hasFalsehood=true;;
-      -s|--specific)  hasSpecific=true;;
+      -f|--falsehood) grools_opts+=('-f') ;;
+      -s|--specific)  grools_opts+=('-s') ;;
       -o|--output)    output=$2   ; hasCustomOutput=true; shift;;
       -g|--grools)    grools=$2   ;shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
@@ -134,16 +133,6 @@ tail -n +2 ${expectation_file} >> "${output}"
 
 dir_report=$(dirname "${output}")/"${OId}"
 
-grools_opt='-u'
-
-if [[ "${hasFalsehood}" == true ]]; then
-    grools_opt=${grools_opt}' -f'
-fi
-
-if [[ "${hasSpecific}" == true ]]; then
-    grools_opt=${grools_opt}' -s'
-fi
-
-java -jar ${grools} ${grools_opt} "${output}" "${dir_report}"
+java -jar ${grools} ${grools_opts[@]} "${output}" "${dir_report}"
 
 echo "Visualize results $(readlink -m ${dir_report}/index.html)"
