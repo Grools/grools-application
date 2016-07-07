@@ -111,6 +111,6 @@ dir_report="${output}"
 
 java -jar ${grools} ${grools_opts[@]} ${proteome_file} ${output}
 
-echo "Visualize results ${dir_report}/index.html"
+echo "Visualize results $(readlink -m ${dir_report}/index.html)"
 
 
