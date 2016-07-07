@@ -4,9 +4,9 @@ appname=$(basename $0)
 version='1.0.0'
 grools='./grools-application.jar'
 tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
-OId=0
+sId=0
 expectation_file=""
-hasCustomOutput=false
+observations_file=""
 output=$(pwd)/organism_id.csv
 IFS_ORI="${IFS}"
 grools_opts=( '-u' )
@@ -26,7 +26,6 @@ show_version(){
 }
 
 
-
 argparse(){
   while [[  $@ = -* ]]; do
     case "$1" in
@@ -34,35 +33,31 @@ argparse(){
       -v|--version)   show_version; exit;;
       -f|--falsehood) grools_opts+=('-f') ;;
       -s|--specific)  grools_opts+=('-s') ;;
-      -o|--output)    output=$2   ; hasCustomOutput=true; shift;;
-      -g|--grools)    grools=$2   ;shift;;
+      -o|--output)    output=$2   ; shift;;
+      -g|--grools)    grools=$2   ; shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift
   done
   
   if [[ $# -ge 2 ]]; then
-    OId=$1
-    expectation_file=$2
+    sId=$1
+    expectation_file="$2"
   else
     show_help
     exit 1
   fi
-  
-  
-  if [[ "${hasCustomOutput}" == false ]]; then
-    output=$(pwd)'/'${OId}'.csv'
-  fi
+
+  observations_file="${output}"'/'"${sId}"'.csv'
 }
 
 observation_writer(){
-  local -r file=$1
-  local -r line=$2
-  local -r splitter=$3
-  local -r source=$4
-  local -r microscope_label="${5/ /}"
-  local -r microscope_gene=$6
-  local -r microscope_product=$7
+  local -r line="${1/ /}"
+  local -r splitter="${2/ /}"
+  local -r source="${3/ /}"
+  local -r microscope_label="${4/ /}"
+  local -r microscope_gene="${5/ /}"
+  local -r microscope_product="${6/ /}"
   local -r type="COMPUTATION"
   local -r isPresent="T"
   local label=""
@@ -80,7 +75,7 @@ observation_writer(){
         name=${microscope_label}','${microscope_gene}
       fi
       description=${microscope_product}
-      echo '"'${label}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}'";"'${name}'";"'${description}'"' >> "${file}"
+      echo '"'${label}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}'";"'${name}'";"'${description}'"' >> "${observations_file}"
     done
   done <<< "${line}"
 }
@@ -95,8 +90,8 @@ grab_microscope_file(){
   local description=""
   local priorknowledges=""
   local -a Array
-  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${output}"
-  curl -Lso ${tmpDir}/${OId}.csv 'https://www.genoscope.cns.fr/agc/microscope/search/export.php?format=csv&part=all&S_id='${OId}
+  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${observations_file}"
+  curl -Lso ${tmpDir}/${sId}.csv 'https://www.genoscope.cns.fr/agc/microscope/search/export.php?format=csv&part=all&S_id='${sId}
   {
     read
     while read -r line
@@ -106,33 +101,30 @@ grab_microscope_file(){
       if [[ -z "${microscope_gene}" ]]; then
         microscope_gene='-'
       fi
-      observation_writer "${output}" "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}"
-      observation_writer "${output}" "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
-      observation_writer "${output}" "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      observation_writer "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      observation_writer "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      observation_writer "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}"
     done
-  }< "${tmpDir}/${OId}.csv"
+  }< "${tmpDir}/${sId}.csv"
 }
 
 argparse $@
 
-dir=$(dirname ${output})
-
-if [[ -e ${dir} ]]; then
-  if [[ ! -d ${dir} ]]; then
-    echo "Error: "${dir}" is not a directory!" >&2
+if [[ -e "${output}" ]]; then
+  if [[ ! -d "${output}" ]]; then
+    echo "Error: "${output}" is not a directory!" >&2
     exit 1
   fi
 else
-  mkdir -p ${dir}
+  mkdir -p ${output}
 fi
 
 
 grab_microscope_file
 
-tail -n +2 ${expectation_file} >> "${output}"
+tail -n +2 ${expectation_file} >> "${observations_file}"
 
-dir_report=$(dirname "${output}")/"${OId}"
 
-java -jar ${grools} ${grools_opts[@]} "${output}" "${dir_report}"
+java -jar ${grools} ${grools_opts[@]} "${observations_file}" "${output}"
 
-echo "Visualize results $(readlink -m ${dir_report}/index.html)"
+echo "Visualize results $(readlink -m ${output}/index.html)"
