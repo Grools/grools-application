@@ -69,6 +69,7 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
@@ -455,6 +456,15 @@ public class Main {
             graph.close();
         } catch (IOException e) {
             LOGGER.error("Error while closing reporting : " + cli.getArgs()[1]);
+            System.exit(1);
+        }
+
+        final File groolsSaveFile = Paths.get(cli.getArgs()[1], "reasoner.grools" ).toFile();
+
+        try {
+            grools.save( groolsSaveFile );
+        } catch ( IOException e ) {
+            LOGGER.error("Error while saving reasoner : " + groolsSaveFile.toString() );
             System.exit(1);
         }
     }
