@@ -94,8 +94,6 @@ else
     echo 'Using gradlew'
 fi
 
-if command -d gradle >/dev/null 2>&1; then
-
 for project in "${projects[@]}"; do
     pushd ${project}
       ${runner} clean build install
