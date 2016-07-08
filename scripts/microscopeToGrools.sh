@@ -4,7 +4,7 @@ appname=$(basename $0)
 version='1.0.0'
 grools='./grools-application.jar'
 tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
-sId=0
+s_id_list=()
 expectation_file=""
 observations_file=""
 output=$(pwd)/organism_id.csv
@@ -12,13 +12,16 @@ IFS_ORI="${IFS}"
 grools_opts=( '-u' )
 
 show_help(){
-  echo $"$0 [OPTIONS] organism_id expectation_file
+  echo $"$0 [OPTIONS] sequence_id expectation_file
   -h --help     display this help
   -v --version  version ${version}
   -f --falsehood enable falsehood mode
   -s --specific enable specific GROOLS mode
   -o --output   path to store output result (default: ${output})
-  -g --grools   path to grools-checker-genome-properties-application (default ${grools} )"
+  -g --grools   path to grools-checker-genome-properties-application (default ${grools} )
+Note: sequence id parameter can be :
+  - a file where each line is an id
+  - a list of id separated by comma example: 14,5,8"
 }
 
 show_version(){
@@ -41,7 +44,13 @@ argparse(){
   done
   
   if [[ $# -ge 2 ]]; then
-    sId=$1
+    if [[ -f "$1" ]]; then
+        while read -r sid; do
+            s_id_list+=( ${sid} )
+        done < "$1"
+    else
+        s_id_list=( ${1//,/ } )
+    fi
     expectation_file="$2"
   else
     show_help
@@ -81,6 +90,7 @@ observation_writer(){
 }
 
 grab_microscope_file(){
+  local sId="$1"
   local label=""
   local evidenceFor=""
   local -r type="COMPUTATION"
@@ -90,7 +100,6 @@ grab_microscope_file(){
   local description=""
   local priorknowledges=""
   local -a Array
-  echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${observations_file}"
   curl -Lso ${tmpDir}/${sId}.csv 'https://www.genoscope.cns.fr/agc/microscope/search/export.php?format=csv&part=all&S_id='${sId}
   {
     read
@@ -119,8 +128,11 @@ else
   mkdir -p ${output}
 fi
 
+echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${observations_file}"
 
-grab_microscope_file
+for sid in "${s_id_list[@]}"; do
+    grab_microscope_file "${sid}"
+done
 
 tail -n +2 ${expectation_file} >> "${observations_file}"
 
