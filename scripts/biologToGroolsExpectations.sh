@@ -101,7 +101,13 @@ if [[ ! -e "$2" || ! -f "$2" ]]; then
     exit 1
 fi
 
-
+dir=$(dirname "$3")
+if [[ ! -e "${dir}" ]]; then
+    mkdir -p "${dir}"
+elif [[ ! -d "${dir}" ]]; then
+    echo 'Error: '"${dir}"' exists and is not a directory!' >&2
+    exit 1
+fi
 
 load_mapper "$1"
 write_expectation "$2" "$3"
