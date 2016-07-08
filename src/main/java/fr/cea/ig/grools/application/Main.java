@@ -373,11 +373,14 @@ public class Main {
             final String                description = line.get( "Description" );
             final Set<PriorKnowledge>   evidenceFor = evidenceForToPriorKnowledge( line.get( "EvidenceFor" ), source, integrator );
 
+            final Observation o = toObservation( name, label, source, description, isPresent, obsType );
+            grools.insert( o );
+
+
             if( evidenceFor != null ){
                 for( final PriorKnowledge pk : evidenceFor ) {
-                    final Observation o = toObservation( name, label, source, description, isPresent, obsType );
                     final Relation relation = new RelationImpl( o, pk );
-                    grools.insert( o, relation );
+                    grools.insert( relation );
                     observationRelatedTo.add( pk );
                     if( o.getType() == ObservationType.ANNOTATION || o.getType() == ObservationType.EXPERIMENTATION )
                         expectedPriorKnowledge.add(pk);
