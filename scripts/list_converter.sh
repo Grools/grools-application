@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo 'Name;EvidenceFor;Type;isPresent;Source;Label;Description' > "${2}"
+echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${2}"
 label=""
 evidenceFor=""
 type="EXPERIMENTATION"
@@ -16,7 +16,7 @@ description=""
         evidenceFor=${accession}
         label=${accession}
         description=${desc}
-        echo 'Exp_'${name}';'${evidenceFor}';'${type}';'${isPresent}';'${source}';Exp_'${label}';'${description} >> "${2}"
+        echo '"Exp_'${name}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}';"Exp_'${label}'";"'${description}'"' >> "${2}"
     fi
   done
 } < $1
