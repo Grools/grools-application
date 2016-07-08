@@ -57,7 +57,7 @@ argparse(){
     exit 1
   fi
 
-  observations_file="${output}"'/'"${sId}"'.csv'
+  observations_file="${output}"'/observations.csv'
 }
 
 observation_writer(){
