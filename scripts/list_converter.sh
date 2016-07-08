@@ -19,4 +19,4 @@ description=""
         echo '"Exp_'${name}'";"'${evidenceFor}'";"'${type}'";"'${isPresent}'";"'${source}';"Exp_'${label}'";"'${description}'"' >> "${2}"
     fi
   done
-} < $1
+} < "$1"
