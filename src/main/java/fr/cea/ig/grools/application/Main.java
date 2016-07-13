@@ -263,10 +263,11 @@ public class Main {
 
         Integrator integrator = null;
 
-
-        //args = new String[]{ "-f", "-g", "UP000000813.csv", "test_reporting1"}; // for debug purpose
+        // for debug purpose
+        //args = new String[]{ "-f", "-g", "UP000000813.csv", "test_reporting1"};
         //args = new String[]{ "-u", "36.csv", "test_reporting2"}; // for debug purpose
         //args =  new String[]{ "-f", "-g", "/media/sf_agc/proj/Grools/tester/UP000000430.csv", "/media/sf_agc/proj/Grools/tester/" };
+        //args =  new String[]{  "-s", "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway/" };
         final CommandLine   cli     = parseArgs( args );
         Reader              in      = null;
         Iterable<CSVRecord> lines   = null;
@@ -409,6 +410,7 @@ public class Main {
         LOGGER.info("Reasoning...");
         grools.reasoning();
 
+
         LOGGER.info("Reporting...");
         List<PriorKnowledge> tops = null;
         if( cli.hasOption( "unipathway" ) ) {
@@ -442,7 +444,7 @@ public class Main {
         try {
             graph = new GraphWriter( cli.getArgs()[1] );
         } catch (Exception e) {
-            LOGGER.error("while creating reporting into: "+cli.getArgs()[1]);
+            LOGGER.error("while creating report into: "+cli.getArgs()[1]);
             System.exit(1);
         }
 
@@ -451,25 +453,33 @@ public class Main {
             try {
                 graph.addGraph( top, relations );
             } catch (Exception e) {
-                LOGGER.error("while creating reporting : " + top.getName());
+                LOGGER.error("while creating report : " + top.getName());
                 System.exit(1);
             }
         }
         try {
             graph.close();
         } catch (IOException e) {
-            LOGGER.error("Error while closing reporting : " + cli.getArgs()[1]);
+            LOGGER.error("Error while closing report : " + cli.getArgs()[1]);
             System.exit(1);
         }
 
-        final File groolsSaveFile = Paths.get(cli.getArgs()[1], "reasoner.grools" ).toFile();
-
+        LOGGER.info("Saving reasoner...");
+        final File groolsSaveFile = Paths.get(cli.getArgs()[1], "reasoner.grools").toFile();
         try {
             grools.save( groolsSaveFile );
         } catch ( IOException e ) {
             LOGGER.error("Error while saving reasoner : " + groolsSaveFile.toString() );
             System.exit(1);
         }
+
+        try {
+            grools.close();
+        } catch ( Exception e ) {
+            LOGGER.error("Error while closing reasoner");
+            System.exit(1);
+        }
+
     }
 
 }
