@@ -4,7 +4,7 @@ label=""
 evidenceFor=""
 type="EXPERIMENTATION"
 isPresent="T"
-source="LABGeM"
+source="$3"
 name=""
 description=""
 {
