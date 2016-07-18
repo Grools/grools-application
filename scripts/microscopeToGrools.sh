@@ -61,14 +61,14 @@ argparse(){
 }
 
 observation_writer(){
-  local -r line="${1/ /}"
-  local -r splitter="${2/ /}"
-  local -r source="${3/ /}"
-  local -r microscope_label="${4/ /}"
-  local -r microscope_gene="${5/ /}"
-  local -r microscope_product="${6/ /}"
+  local -r line="${1}"
+  local -r splitter="${2}"
+  local -r source="${3}"
+  local -r microscope_label="${4}"
+  local -r microscope_gene="${5}"
+  local -r microscope_product="${6}"
   local -r type="COMPUTATION"
-  local -r isPresent="T"
+  local -r isPresent="${7}"
   local label=""
   local evidenceFor=""
   local name=""
@@ -94,7 +94,7 @@ grab_microscope_file(){
   local label=""
   local evidenceFor=""
   local -r type="COMPUTATION"
-  local -r isPresent="T"
+  local isPresent=""
   local source="Microscope"
   local name=""
   local description=""
@@ -110,9 +110,14 @@ grab_microscope_file(){
       if [[ -z "${microscope_gene}" ]]; then
         microscope_gene='-'
       fi
-      observation_writer "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}"
-      observation_writer "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}"
-      observation_writer "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}"
+      if [[ "${microscope_mutation}" == remnant || "${microscope_mutation}" == partial ]]; then
+        isPresent="F"
+      else
+        isPresent="T"
+      fi
+      observation_writer "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${isPresent}"
+      observation_writer "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${isPresent}"
+      observation_writer "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${isPresent}"
     done
   }< "${tmpDir}/${sId}.csv"
 }
