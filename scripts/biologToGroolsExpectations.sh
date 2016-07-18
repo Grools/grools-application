@@ -51,6 +51,7 @@ write_expectation(){
     local label=''
     local desc=''
     local -A ids
+    local -A compounds=([PM01]=carbon [PM02]=carbon [PM03]=nitrogen [PM04]=sulfur )
     echo '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"' > "${output}"
     while IFS=' ' read -r plate position observation; do
         name=${plate}'_'${position}
@@ -64,8 +65,8 @@ write_expectation(){
             fi
             name_id=${name}'_'${counter}
             ids[${name}]=${counter}
-            label=${genprop_nrj_source[${evidence}]}
-            desc=${genprop_desc[${evidence}]}
+            desc=${genprop_nrj_source[${evidence}]}' as '${compounds[${plate}]}' source'
+            label=${genprop_desc[${evidence}]}
             if [[ "${observation}" == "TRUE" ]]; then
                 echo '"'${name_id}'";"'${evidence}'";"'${obs_type}'";"T";"'${obs_source}'";"'${label}'";"Growth with '${desc}'"' >> "${output}"
             elif [[ "${observation}" == "FALSE" ]]; then
