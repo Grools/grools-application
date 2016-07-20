@@ -142,6 +142,6 @@ done
 tail -n +2 ${expectation_file} >> "${observations_file}"
 
 
-java -jar ${grools} ${grools_opts[@]} "${observations_file}" "${output}"
+java -jar -server -XX:+UseParallelGC -Xmx4g -Xms2g ${grools} ${grools_opts[@]} "${observations_file}" "${output}"
 
 echo "Visualize results $(readlink -m ${output}/index.html)"
