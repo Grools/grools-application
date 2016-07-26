@@ -311,7 +311,7 @@ public class Main {
             mode = Mode.DISPENSABLE;
         }
         else if(cli.hasOption( "specific" ) ){
-            mode = Mode.SPECIFIC;
+            mode = Mode.NORMAL_SPECIFIC;
         }
         else
             mode = Mode.NORMAL;
