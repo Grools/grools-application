@@ -383,7 +383,7 @@ public class Main {
                     final Relation relation = new RelationImpl( o, pk );
                     grools.insert( relation );
                     observationRelatedTo.add( pk );
-                    if( o.getType() == ObservationType.ANNOTATION || o.getType() == ObservationType.EXPERIMENTATION )
+                    if( o.getType() == ObservationType.CURATION || o.getType() == ObservationType.EXPERIMENTATION )
                         expectedPriorKnowledge.add(pk);
                 }
             }
