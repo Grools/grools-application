@@ -88,7 +88,7 @@ public class Main {
 
     private static void showHelp( final Options options){
         final HelpFormatter formatter   = new HelpFormatter();
-        formatter.printHelp( APPNAME +"[OPTION] csv_file outpur_dir", options );
+        formatter.printHelp( APPNAME +"[OPTION] csv_file output_dir", options );
         System.out.println();
         System.out.println("Note: Parameter unipathway  and genome-properties are mutually exclusive");
         System.out.println("Note: Parameter dispensable and specific are mutually exclusive");
