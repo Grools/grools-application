@@ -81,7 +81,7 @@ import java.util.stream.Collectors;
  * Main
  */
 public class Main {
-    private final static Logger LOGGER  = (Logger) LoggerFactory.getLogger( Main.class );
+    private final static transient Logger LOGGER  = (Logger) LoggerFactory.getLogger( Main.class );
 
     private static final String VERSION = "1.0.0";
     private static final String APPNAME = "grools-application";
@@ -268,6 +268,7 @@ public class Main {
         //args = new String[]{ "-u", "36.csv", "test_reporting2"}; // for debug purpose
         //args =  new String[]{ "-f", "-g", "/media/sf_agc/proj/Grools/tester/UP000000430.csv", "/media/sf_agc/proj/Grools/tester/" };
         //args =  new String[]{  "-s", "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway/" };
+//        args =  new String[]{  "-s", "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway-new/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway6/" };
         final CommandLine   cli     = parseArgs( args );
         Reader              in      = null;
         Iterable<CSVRecord> lines   = null;
@@ -318,7 +319,7 @@ public class Main {
 
 
         LOGGER.info("Generating concept graph...");
-        final Reasoner      grools  = new ReasonerImpl( mode, Verbosity.HIGHT );
+        final Reasoner      grools  = new ReasonerImpl( mode );
         String input = null;
         if( cli.hasOption( "unipathway" ) ) {
             if( cli.hasOption( "input") )
