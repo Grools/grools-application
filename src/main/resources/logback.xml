@@ -36,7 +36,7 @@
 
 <configuration>
     <contextName>GROOLS application</contextName>
-    <jmxConfigurator />
+    <jmxConfigurator/>
 
     <appender name="FILE" class="ch.qos.logback.core.FileAppender">
         <file>grools.log</file>
@@ -63,15 +63,15 @@
         <appender-ref ref="STDOUT"/>
     </logger>
 
-    <logger name="fr.cea.ig.grools.drools" level="OFF" >
+    <logger name="fr.cea.ig.grools.drools" level="OFF">
         <appender-ref ref="FILE"/>
     </logger>
 
-    <logger name="org.drools" level="OFF" >
+    <logger name="org.drools" level="OFF">
         <appender-ref ref="FILE"/>
     </logger>
 
     <root level="INFO">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </root>
 </configuration>
