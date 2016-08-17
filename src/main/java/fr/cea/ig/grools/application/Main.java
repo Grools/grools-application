@@ -267,11 +267,7 @@ public class Main {
         Integrator integrator = null;
         
         // for debug purpose
-        //args = new String[]{ "-f", "-g", "UP000000813.csv", "test_reporting1"};
-        //args = new String[]{ "-u", "36.csv", "test_reporting2"}; // for debug purpose
-        //args =  new String[]{ "-f", "-g", "/media/sf_agc/proj/Grools/tester/UP000000430.csv", "/media/sf_agc/proj/Grools/tester/" };
-        //args =  new String[]{  "-s", "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway/" };
-//        args =  new String[]{  "-s", "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway-new/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/Unipathway6/" };
+        //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
