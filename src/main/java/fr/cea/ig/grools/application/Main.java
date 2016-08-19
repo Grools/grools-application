@@ -268,6 +268,7 @@ public class Main {
         
         // for debug purpose
         //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
+        //args = new String[]{ "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/19082016-Unipathway/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/19082016-Unipathway/"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
@@ -452,7 +453,7 @@ public class Main {
             LOGGER.error( "while creating report into: " + cli.getArgs( )[ 1 ] );
             System.exit( 1 );
         }
-        
+        // TODO generate sub graph // will save time (dot is slow), need to refactor to not write asynchronously into index.html
         for( final PriorKnowledge top : tops ) {
             final Set<Relation> relations = grools.getSubGraph( top );
             try {
