@@ -32,8 +32,8 @@ argparse(){
       -h|--help)      show_help         ; exit;;
       -v|--version)   show_version      ; exit;;
       -f|--falsehood) grools_opts+=('-f') ;;
-      -o|--output)    output=$2         ; shift;;
-      -g|--grools)    grools=$2         ; shift;;
+      -o|--output)    output="$2"       ; shift;;
+      -g|--grools)    grools="$2"       ; shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift
@@ -91,15 +91,14 @@ grab_uniprot_file(){
 }
 
 argparse $@
-dir=$(dirname ${output})
 
-if [[ -e ${dir} ]]; then
-  if [[ ! -d ${dir} ]]; then
-    echo "Error: "${dir}" is not a directory!" >&2
+if [[ -e "${output}" ]]; then
+  if [[ ! -d "${output}" ]]; then
+    echo "Error: "${output}" is not a directory!" >&2
     exit 1
   fi
 else
-  mkdir -p ${dir}
+  mkdir -p "${output}"
 fi
 
 
