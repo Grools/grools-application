@@ -7,7 +7,7 @@ tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
 s_id_list=()
 expectation_file=""
 observations_file=""
-output=$(pwd)/organism_id.csv
+output="$(pwd)"
 IFS_ORI="${IFS}"
 grools_opts=( '-u' )
 
@@ -18,7 +18,8 @@ show_help(){
   -f --falsehood enable falsehood mode
   -s --specific enable specific GROOLS mode
   -o --output   path to store output result (default: ${output})
-  -g --grools   path to grools-checker-genome-properties-application (default ${grools} )
+  -g --grools   path to grools-application (default ${grools} )
+
 Note: sequence id parameter can be :
   - a file where each line is an id
   - a list of id separated by comma example: 14,5,8"

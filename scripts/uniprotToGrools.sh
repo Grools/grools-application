@@ -33,7 +33,7 @@ argparse(){
       -v|--version)   show_version      ; exit;;
       -f|--falsehood) grools_opts+=('-f') ;;
       -o|--output)    output=$2         ; shift;;
-      -g|--grools)    grools=$2         ;shift;;
+      -g|--grools)    grools=$2         ; shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift
@@ -107,7 +107,7 @@ grab_uniprot_file
 
 tail -n +2 ${expectation_file} >> "${proteome_file}"
 
-java -jar ${grools} ${grools_opts[@]} ${proteome_file} ${output}
+java -jar -server -XX:+UseParallelGC -Xmx4g -Xms2g ${grools} ${grools_opts[@]} ${proteome_file} ${output}
 
 echo "Visualize results $(readlink -m ${output}/index.html)"
 
