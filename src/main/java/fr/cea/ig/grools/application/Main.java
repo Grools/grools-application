@@ -37,9 +37,9 @@
 package fr.cea.ig.grools.application;
 
 import ch.qos.logback.classic.Logger;
-import fr.cea.ig.grools.Integrator;
-import fr.cea.ig.grools.Mode;
-import fr.cea.ig.grools.Reasoner;
+import fr.cea.ig.grools.reasoner.Integrator;
+import fr.cea.ig.grools.reasoner.Mode;
+import fr.cea.ig.grools.reasoner.Reasoner;
 import fr.cea.ig.grools.genome_properties.GenomePropertiesIntegrator;
 import fr.cea.ig.grools.obo.OboIntegrator;
 import fr.cea.ig.grools.reasoner.ReasonerImpl;
@@ -51,7 +51,7 @@ import fr.cea.ig.grools.fact.Relation;
 import fr.cea.ig.grools.fact.RelationImpl;
 import fr.cea.ig.grools.logic.TruthValue;
 import fr.cea.ig.grools.reporter.GraphWriter;
-import fr.cea.ig.model.genome_properties.ComponentEvidence;
+import fr.cea.ig.bio.model.genome_properties.ComponentEvidence;
 import lombok.NonNull;
 import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
@@ -403,7 +403,7 @@ public class Main {
             priorKnowledgeLeaves.removeAll( observationRelatedTo );
             for( final PriorKnowledge leaf : priorKnowledgeLeaves ) {
                 final GenomePropertiesIntegrator gpi  = ( GenomePropertiesIntegrator ) integrator;
-                ComponentEvidence                term = ( ComponentEvidence ) gpi.getRdfParser( ).getTerm( leaf.getLabel( ) );
+                ComponentEvidence                term = ( ComponentEvidence ) gpi.getRdfReader( ).getTerm( leaf.getLabel( ) );
                 if( term.getCategory( ).equals( "HMM" ) ) {
                     final Observation o = toObservation( "No_" + leaf.getName( ), leaf.getLabel( ), input, leaf.getDescription( ), TruthValue.f, ObservationType.COMPUTATION );
                     final Relation    r = new RelationImpl( o, leaf );
