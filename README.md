@@ -57,10 +57,10 @@ Name;EvidenceFor;Type;isPresent;Source;Label;Description
 Grools-application require to pre-install some libraries:
 - dot from [Graphviz](https://github.com/ellson/graphviz)
 - [grools-reasoner](https://github.com/Grools/grools-reasoner)
-- [genome-properties-model](https://github.com/institut-de-genomique/bio-scribe)
-- [grools-checker-genome-properties](https://github.com/Grools/grools-genome-properties-plugins)
-- [grools-checker-obo](https://github.com/Grools/grools-obo-plugins)
-- [grools-checker-reporter](https://github.com/Grools/grools-reporter)
+- [bio-scribe](https://github.com/institut-de-genomique/bio-scribe)
+- [grools-genome-properties](https://github.com/Grools/grools-genome-properties-plugins)
+- [grools-obo](https://github.com/Grools/grools-obo-plugins)
+- [grools-reporter](https://github.com/Grools/grools-reporter)
 
 These projects use the powerful Gradle as build system. If you do not have or you can not install it.
 Instead of `gradle` use the corresponding wrapper on each projects:
