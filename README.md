@@ -56,15 +56,11 @@ Name;EvidenceFor;Type;isPresent;Source;Label;Description
 
 Grools-application require to pre-install some libraries:
 - dot from [Graphviz](https://github.com/ellson/graphviz)
-- [grools-checker](https://github.com/Grools/grools-checker)
-- [grools-drools-checker](https://github.com/Grools/grools-drools-checker)
-- [genome-properties-model](https://github.com/institut-de-genomique/genome-properties-model)
-- [genome-properties-parser](https://github.com/institut-de-genomique/genome-properties-parser)
-- [grools-checker-genome-properties](https://github.com/Grools/grools-checker-genome-properties)
-- [obo-model](https://github.com/institut-de-genomique/obo-model)
-- [obo-parser](https://github.com/institut-de-genomique/obo-parser)
-- [grools-checker-obo](https://github.com/Grools/grools-checker-obo)
-- [grools-checker-reporter](https://github.com/Grools/grools-checker-reporter)
+- [grools-reasoner](https://github.com/Grools/grools-reasoner)
+- [genome-properties-model](https://github.com/institut-de-genomique/bio-scribe)
+- [grools-checker-genome-properties](https://github.com/Grools/grools-genome-properties-plugins)
+- [grools-checker-obo](https://github.com/Grools/grools-obo-plugins)
+- [grools-checker-reporter](https://github.com/Grools/grools-reporter)
 
 These projects use the powerful Gradle as build system. If you do not have or you can not install it.
 Instead of `gradle` use the corresponding wrapper on each projects:
