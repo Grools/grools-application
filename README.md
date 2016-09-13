@@ -1,14 +1,16 @@
 # GROOLS Application
 
-GROOLS is a powerfull reasoner to deal with uncertainties and contradiction. This application is a standalone tools to show a possible usage of GROOLS API.
+GROOLS is a powerful reasoner representing knowledge as graph and dealing with uncertainties and contradictions. This application is a standalone tools that illustrates a possible usage of GROOLS API.
 
 **Cite me** [![DOI](https://zenodo.org/badge/61386938.svg)](https://zenodo.org/badge/latestdoi/61386938)
 
 
 ## Biology
-GROOLS is applied here on biology and bioinformatics fields. Indeed in biology we have a lot of uncertainties. We propose here two different knowledge models:
- - GenomeProperties from J. Craig Venter Institute
- - Unipathway from SwissProt
+This GROOLS application is a bioinformatics software that helps biologists in the evaluation of genome functional annotation through biological processes like metabolic pathways.
+
+Two different ressources are used to represent biological knowledge:
+ - [Genome Properties](http://www.jcvi.org/cgi-bin/genome-properties/index.cgi)
+ - [Unipathway](http://nar.oxfordjournals.org/content/40/D1/D761.long)
 
 ### Results
 The reasoner was launched on 14 prokaryotic organisms using both [Unipathway (Morgat A. et al. 2011)](http://nar.oxfordjournals.org/content/early/2011/11/17/nar.gkr1023.short) and [Genome-Properties (Haft D.H. et al.)](http://nar.oxfordjournals.org/content/41/D1/D387) as prior-knowledge metabolic model. These models have been tested using both [Microscope (Vallenet D. et al. )](http://nar.oxfordjournals.org/content/early/2012/11/26/nar.gks1194)  and [Uniprot](http://nar.oxfordjournals.org/content/36/suppl_1/D190.short) annotation prediction. Results are availlable at http://www.genoscope.cns.fr/agc/grools/ .
