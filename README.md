@@ -1,11 +1,11 @@
 # GROOLS Application
 
-GROOLS is a powerful reasoner representing knowledge as graph and dealing with uncertainties and contradictions. This application is a standalone tools that illustrates a possible usage of GROOLS API.
+GROOLS is a powerful reasoner representing knowledge as graph and dealing with uncertainties and contradictions for predictions and expectations. This application is a standalone tool that illustrates a possible usage of GROOLS API.
 
 **Cite me** [![DOI](https://zenodo.org/badge/61386938.svg)](https://zenodo.org/badge/latestdoi/61386938)
 
 
-## Biology
+## Biological application
 This GROOLS application is a bioinformatics software that helps biologists in the evaluation of genome functional annotation through biological processes like metabolic pathways.
 
 Two different resources are used to represent biological knowledge:
@@ -13,43 +13,40 @@ Two different resources are used to represent biological knowledge:
  - [Unipathway](http://nar.oxfordjournals.org/content/40/D1/D761.long)
 
 ### Results
-The reasoner was launched on 14 prokaryotic genomes/proteomes using:
-- Unipathway or Genome Properties as prior-knowledge to represent biological processes like  metabolic pathways
-- and protein annotations from [MicroScope](https://www.genoscope.cns.fr/agc/microscope)  and [UniProt](http://www.uniprot.org). 
-Results are available at http://www.genoscope.cns.fr/agc/grools/ .
+As test case, the reasoner was launched on 14 prokaryotic genomes/proteomes using:
+- UniPathway or Genome Properties as prior-knowledge to represent biological processes like  metabolic pathways
+- and protein annotations from [MicroScope](https://www.genoscope.cns.fr/agc/microscope)  and [UniProt](http://www.uniprot.org).
 
-### Scripts
-As example of usage we made two shell scripts that grab data from Microscope Platform and Uniprot.
-Predicted prior-knowledge are tooks from Uniprot for genome properties knowlede model.
-Predicted prior-knowledge are tooks from Microscope for unipathway knowledge model.
+Results are available [here](http://www.genoscope.cns.fr/agc/grools/).
 
-### Usage
+### Usage from shell script
 
-#### From shell script
-Shell scripts are  easy to use. Once grools-application is build, you have to provide:
+Two shell scripts are available to grab annotations from MicroScope or Uniprot using UniPathway or Genome Properties as prior-knowledge, respectively.
+
+Shell scripts are easy to use. Once grools-application is build, you have to provide:
 - the path to the jar file
-- organism/proteome number
-- expectation list
+- organism/proteome identifier
+- expectation file in GROOLS CSV format
 
 ```bash
-./scripts.uniprotTogrools.sh -g build/libs/grools-application-1.0.0.jar UP000000625 ~/expectation.csv
+./scripts/uniprotTogrools.sh -g build/libs/grools-application-1.0.0.jar UP000000625 ~/expectation.csv
 ```
 ```bash
 ./scripts/microscopeTogrools.sh -g build/libs/grools-application-1.0.0.jar 36 ~/expectation.csv
 ```
 
-#### From jar file
-The application ca be launch directly with the jar file, as follow:
+### Usage from jar file
+The application ca be launched directly with the jar file, as follow:
 ```bash
 java -jar  build/libs/grools-application-1.0.0.jar [-u/-g] observations.csv results_dir/
 ```
 
 This application require three parameters:
-- list of observations in well formatted csv file (see section CSV format)
+- file of observations (predictions and expectations) in GROOLS CSV format
 - a directory to save results
-- the option -g or -u need to be provided to let the reasoner took the right prior-knowledge model (genome properties or unipathway )
+- the option -g  or -u to chose between Genome Properties (-g) or UniPathway (-u) as resource of prior-knowledge.
 
-## CSV format
+## GROOLS CSV format
 The file need to start with the corresponding header:
 ```csv
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
