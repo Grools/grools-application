@@ -18,7 +18,7 @@ As a test case, the reasoner was launched on 14 prokaryotic genomes/proteomes us
 - UniPathway or Genome Properties as prior-knowledge to represent biological processes like  metabolic pathways
 - and protein annotations from [MicroScope](https://www.genoscope.cns.fr/agc/microscope)  and [UniProt](http://www.uniprot.org).
 
-Results are available [here](http://www.genoscope.cns.fr/agc/grools/).
+Results of this test case are available [here](http://www.genoscope.cns.fr/agc/grools/).
 
 ### Usage from shell script
 
@@ -48,6 +48,7 @@ This application requires three parameters:
 - the option -g  or -u to choose between Genome Properties (-g) or UniPathway (-u) as a resource of prior-knowledge.
 
 ### GROOLS CSV file format
+This file format allows user to declare observations that will be propagated on the prior-knowledge graph.
 The header of the CSV file should be:
 ```csv
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
@@ -60,6 +61,10 @@ Name;EvidenceFor;Type;isPresent;Source;Label;Description
 - Source: is the origin of the given observation (e.g. UniProt, MicroScope, BIOLOG)
 - Label: is a short description of the observation 
 - Description: is a complete description of the observation
+
+#### Examples
+- This [file](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/genome-properties/falsehood/UP000000430.csv) contains all Acinetobacter baylyi ADP1 observations from UniProt (PFAM and TIGRFAM) and Biolog results related to Genome Properties.
+- This [file](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/unipathway/specific/observations.csv) contains all Acinetobacter baylyi ADP1 observations from MicroScope (EC number, RHEA and MetaCyc reactions) and Biolog results related to UniPathway.
 
 ## Build
 
