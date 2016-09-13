@@ -14,7 +14,7 @@ Two different resources are used to represent biological knowledge:
  - [Unipathway](http://nar.oxfordjournals.org/content/40/D1/D761.long)
 
 ### Results
-As test case, the reasoner was launched on 14 prokaryotic genomes/proteomes using:
+As a test case, the reasoner was launched on 14 prokaryotic genomes/proteomes using:
 - UniPathway or Genome Properties as prior-knowledge to represent biological processes like  metabolic pathways
 - and protein annotations from [MicroScope](https://www.genoscope.cns.fr/agc/microscope)  and [UniProt](http://www.uniprot.org).
 
@@ -47,12 +47,12 @@ This application require three parameters:
 - a directory to save results
 - the option -g  or -u to chose between Genome Properties (-g) or UniPathway (-u) as resource of prior-knowledge.
 
-## GROOLS CSV format
+### GROOLS CSV format
 The file need to start with the corresponding header:
 ```csv
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
 ```
-### Fields
+#### Fields
 - Name: is a unique string usable as an id
 - EvidenceFor: is the name to related prior-knowledge
 - Type: CURATION,EXPECTATION,COMPUTATION
