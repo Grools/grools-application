@@ -11,7 +11,7 @@ This GROOLS application is a bioinformatics software that helps biologists in th
 
 Two different resources are used to represent biological knowledge:
  - [Genome Properties](http://www.jcvi.org/cgi-bin/genome-properties/index.cgi)
- - [Unipathway](http://nar.oxfordjournals.org/content/40/D1/D761.long)
+ - [UniPathway](http://nar.oxfordjournals.org/content/40/D1/D761.long)
 
 ### Results
 As a test case, the reasoner was launched on 14 prokaryotic genomes/proteomes using:
@@ -22,7 +22,7 @@ Results are available [here](http://www.genoscope.cns.fr/agc/grools/).
 
 ### Usage from shell script
 
-Two shell scripts are available to grab annotations from MicroScope or Uniprot using UniPathway or Genome Properties as prior-knowledge, respectively.
+Two shell scripts are available to grab annotations from MicroScope or UniProt using UniPathway or Genome Properties as prior-knowledge, respectively.
 
 Shell scripts are easy to use. Once grools-application is build, you have to provide:
 - the path to the jar file
@@ -37,33 +37,33 @@ Shell scripts are easy to use. Once grools-application is build, you have to pro
 ```
 
 ### Usage from jar file
-The application ca be launched directly with the jar file, as follow:
+The application can be launched directly with the jar file, as follow:
 ```bash
 java -jar  build/libs/grools-application-1.0.0.jar [-u/-g] observations.csv results_dir/
 ```
 
-This application require three parameters:
+This application requires three parameters:
 - file of observations (predictions and expectations) in GROOLS CSV format
 - a directory to save results
-- the option -g  or -u to chose between Genome Properties (-g) or UniPathway (-u) as resource of prior-knowledge.
+- the option -g  or -u to choose between Genome Properties (-g) or UniPathway (-u) as a resource of prior-knowledge.
 
-### GROOLS CSV format
-The file need to start with the corresponding header:
+### GROOLS CSV file format
+The header of the CSV file should be:
 ```csv
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
 ```
 #### Fields
-- Name: is a unique string usable as an id
-- EvidenceFor: is the name to related prior-knowledge
-- Type: CURATION,EXPECTATION,COMPUTATION
+- Name: is a unique identifier
+- EvidenceFor: is the name of the related prior-knowledge
+- Type: CURATION,EXPERIMENTATION,COMPUTATION
 - isPresent: T or F (True/False)
-- Source: is the origin of the given observation as: EC,METACYC,TIGRFAM,PFAM,RHEA...
-- Label: A strings fields
-- Description: An description of the given observation. This is displayed on the user interface.
+- Source: is the origin of the given observation (e.g. UniProt, MicroScope, BIOLOG)
+- Label: is a short description of the observation 
+- Description: is a complete description of the observation
 
 ## Build
 
-Grools-application require to pre-install some libraries:
+Grools-application requires to pre-install some libraries:
 - dot from [Graphviz](https://github.com/ellson/graphviz)
 - [grools-reasoner](https://github.com/Grools/grools-reasoner)
 - [bio-scribe](https://github.com/institut-de-genomique/bio-scribe)
@@ -71,8 +71,8 @@ Grools-application require to pre-install some libraries:
 - [grools-obo](https://github.com/Grools/grools-obo-plugins)
 - [grools-reporter](https://github.com/Grools/grools-reporter)
 
-These projects use the powerful Gradle as build system. If you do not have or you can not install it.
-Instead of `gradle` use the corresponding wrapper on each projects:
+These projects use the powerful Gradle as build system. 
+If you do not want or cannot install `gradle`, you may use the corresponding wrapper on each project:
 - gradlew for unix
 - gradlew.bat for windows
 
@@ -87,4 +87,4 @@ pushd grools-application
 popd
 ```
 
-The executable jar file will be located into `grools-application/build/libs/` directory
+The executable jar file will be located in `grools-application/build/libs/` directory
