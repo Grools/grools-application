@@ -12,6 +12,9 @@ As example of usage we made two shell scripts that grab data from Microscope Pla
 Predicted prior-knowledge are tooks from Uniprot for genome properties knowlede model.
 Predicted prior-knowledge are tooks from Microscope for unipathway knwoledge model.
 
+### Results
+The tools was launched on 14 prokaryotic organisms using both [Unipathway (Morgat A. et al. 2011)](http://nar.oxfordjournals.org/content/early/2011/11/17/nar.gkr1023.short) and [Genome-Properties (Haft D.H. et al.)](http://nar.oxfordjournals.org/content/41/D1/D387) as prior-knowledge model. These models have been tested using both [Microscope (Vallenet D. et al. )](http://nar.oxfordjournals.org/content/early/2012/11/26/nar.gks1194) prediction and [Uniprot](http://nar.oxfordjournals.org/content/36/suppl_1/D190.short) prediction. Results are availlable at http://www.genoscope.cns.fr/agc/grools/ .
+
 ### Usage
 
 #### From shell script
