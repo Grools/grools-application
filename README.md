@@ -16,7 +16,7 @@ The reasoner was launched on 14 prokaryotic organisms using both [Unipathway (Mo
 ### Scripts
 As example of usage we made two shell scripts that grab data from Microscope Platform and Uniprot.
 Predicted prior-knowledge are tooks from Uniprot for genome properties knowlede model.
-Predicted prior-knowledge are tooks from Microscope for unipathway knwoledge model.
+Predicted prior-knowledge are tooks from Microscope for unipathway knowledge model.
 
 ### Usage
 
