@@ -8,12 +8,15 @@ GROOLS is a powerful reasoner representing knowledge as graph and dealing with u
 ## Biology
 This GROOLS application is a bioinformatics software that helps biologists in the evaluation of genome functional annotation through biological processes like metabolic pathways.
 
-Two different ressources are used to represent biological knowledge:
+Two different resources are used to represent biological knowledge:
  - [Genome Properties](http://www.jcvi.org/cgi-bin/genome-properties/index.cgi)
  - [Unipathway](http://nar.oxfordjournals.org/content/40/D1/D761.long)
 
 ### Results
-The reasoner was launched on 14 prokaryotic organisms using both [Unipathway (Morgat A. et al. 2011)](http://nar.oxfordjournals.org/content/early/2011/11/17/nar.gkr1023.short) and [Genome-Properties (Haft D.H. et al.)](http://nar.oxfordjournals.org/content/41/D1/D387) as prior-knowledge metabolic model. These models have been tested using both [Microscope (Vallenet D. et al. )](http://nar.oxfordjournals.org/content/early/2012/11/26/nar.gks1194)  and [Uniprot](http://nar.oxfordjournals.org/content/36/suppl_1/D190.short) annotation prediction. Results are availlable at http://www.genoscope.cns.fr/agc/grools/ .
+The reasoner was launched on 14 prokaryotic genomes/proteomes using:
+- Unipathway or Genome Properties as prior-knowledge to represent biological processes like  metabolic pathways
+- and protein annotations from [MicroScope](https://www.genoscope.cns.fr/agc/microscope)  and [UniProt](http://www.uniprot.org). 
+Results are available at http://www.genoscope.cns.fr/agc/grools/ .
 
 ### Scripts
 As example of usage we made two shell scripts that grab data from Microscope Platform and Uniprot.
