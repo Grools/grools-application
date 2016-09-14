@@ -54,19 +54,19 @@ The header of the CSV file should be:
 Name;EvidenceFor;Type;isPresent;Source;Label;Description
 ```
 #### Fields
-- Name: is a unique identifier
-- EvidenceFor: is the name of the related prior-knowledge
-- Type: CURATION,EXPERIMENTATION,COMPUTATION
-- isPresent: T or F (True/False)
-- Source: is the origin of the given observation (e.g. UniProt, MicroScope, BIOLOG)
-- Label: is a short description of the observation 
-- Description: is a complete description of the observation
+- **Name:** is a unique identifier
+- **EvidenceFor:** is the name of the related prior-knowledge
+- **Type:** CURATION,EXPERIMENTATION,COMPUTATION
+- **isPresent:** T or F (True/False)
+- **Source:** is the origin of the given observation (e.g. UniProt, MicroScope, BIOLOG)
+- **Label:** is a short description of the observation 
+- **Description:** is a complete description of the observation
 
 #### Examples
 - This [file](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/genome-properties/falsehood/UP000000430.csv) contains all Acinetobacter baylyi ADP1 observations from UniProt (PFAM and TIGRFAM) and Biolog results related to Genome Properties.
 - This [file](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/unipathway/specific/observations.csv) contains all Acinetobacter baylyi ADP1 observations from MicroScope (EC number, RHEA and MetaCyc reactions) and Biolog results related to UniPathway.
 
-## Build
+## Build from source
 
 Grools-application requires to pre-install some libraries:
 - dot from [Graphviz](https://github.com/ellson/graphviz)
