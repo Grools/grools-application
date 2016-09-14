@@ -81,7 +81,7 @@ If you do not want or cannot install `gradle`, you may use the corresponding wra
 - gradlew for unix
 - gradlew.bat for windows
 
-### Install script
+### Commands to build it
 
 ```bash
 bash build.sh
