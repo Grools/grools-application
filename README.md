@@ -84,11 +84,9 @@ If you do not want or cannot install `gradle`, you may use the corresponding wra
 ### Commands to build it
 
 ```bash
-bash build.sh
-
 git clone https://github.com/Grools/grools-application
 pushd grools-application
-  gradle clean shadowJar
+ bash build.sh
 popd
 ```
 
