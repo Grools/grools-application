@@ -50,7 +50,7 @@ import fr.cea.ig.grools.fact.PriorKnowledge;
 import fr.cea.ig.grools.fact.Relation;
 import fr.cea.ig.grools.fact.RelationImpl;
 import fr.cea.ig.grools.logic.TruthValue;
-import fr.cea.ig.grools.reporter.GraphWriter;
+import fr.cea.ig.grools.reporter.Reporter;
 import fr.cea.ig.bio.model.genome_properties.ComponentEvidence;
 import lombok.NonNull;
 import org.apache.commons.cli.CommandLine;
@@ -268,7 +268,7 @@ public class Main {
         
         // for debug purpose
         //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
-        //args = new String[]{ "-u", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/19082016-Unipathway/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/19082016-Unipathway/"};
+        //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-24082016/genome-properties/falsehood/UP000000430.csv", "test_Y"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
@@ -445,9 +445,9 @@ public class Main {
             System.exit( 1 );
         }
         
-        GraphWriter graph = null;
+        Reporter reporter = null;
         try {
-            graph = new GraphWriter( cli.getArgs( )[ 1 ] );
+            reporter = new Reporter( cli.getArgs( )[ 1 ] );
         }
         catch( Exception e ) {
             LOGGER.error( "while creating report into: " + cli.getArgs( )[ 1 ] );
@@ -457,7 +457,7 @@ public class Main {
         for( final PriorKnowledge top : tops ) {
             final Set<Relation> relations = grools.getSubGraph( top );
             try {
-                graph.addGraph( top, relations );
+                reporter.addGraph( top, relations );
             }
             catch( Exception e ) {
                 LOGGER.error( "while creating report : " + top.getName( ) );
@@ -465,7 +465,7 @@ public class Main {
             }
         }
         try {
-            graph.close( );
+            reporter.close( );
         }
         catch( IOException e ) {
             LOGGER.error( "Error while closing report : " + cli.getArgs( )[ 1 ] );
