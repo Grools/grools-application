@@ -68,8 +68,8 @@ observation_writer(){
   local -r microscope_label="${4}"
   local -r microscope_gene="${5}"
   local -r microscope_product="${6}"
-  local -r type="COMPUTATION"
-  local -r isPresent="${7}"
+  local -r type="${7}"
+  local -r isPresent="${8}"
   local label=""
   local evidenceFor=""
   local name=""
@@ -94,7 +94,7 @@ grab_microscope_file(){
   local sId="$1"
   local label=""
   local evidenceFor=""
-  local -r type="COMPUTATION"
+  local type="COMPUTATION"
   local isPresent=""
   local source="Microscope"
   local name=""
@@ -116,9 +116,14 @@ grab_microscope_file(){
       else
         isPresent="T"
       fi
-      observation_writer "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${isPresent}"
-      observation_writer "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${isPresent}"
-      observation_writer "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${isPresent}"
+      if [[ $microscope_evidence =~ validated* ]]; then
+        type="CURATION"
+      else
+        type="COMPUTATION"
+      fi
+      observation_writer "${microscope_ECnumber}"     ',' 'EC'      "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${type}" "${isPresent}"
+      observation_writer "${microscope_microCycRid}"  '$' 'METACYC' "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${type}" "${isPresent}"
+      observation_writer "${microscope_rheaRid}"      '$' 'RHEA'    "${microscope_label}" "${microscope_gene}" "${microscope_product}" "${type}" "${isPresent}"
     done
   }< "${tmpDir}/${sId}.csv"
 }
