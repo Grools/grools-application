@@ -17,7 +17,7 @@ show_help(){
   -v --version   version ${version}
   -f --falsehood enable falsehood mode
   -o --output    path to store output result (default: ${output})
-  -g --grools    path to grools-application (default ${grools} )"
+  -j --jar    path to grools-application (default ${grools} )"
 }
 
 show_version(){

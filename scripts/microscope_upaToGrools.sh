@@ -18,7 +18,7 @@ show_help(){
   -f --falsehood enable falsehood mode
   -s --specific enable specific GROOLS mode
   -o --output   path to store output result (default: ${output})
-  -g --grools   path to grools-application (default ${grools} )
+  -j --jar   path to grools-application (default ${grools} )
 
 Note: sequence id parameter can be :
   - a file where each line is an id
