@@ -32,7 +32,7 @@ argparse(){
       -v|--version)   show_version      ; exit;;
       -f|--falsehood) grools_opts+=('-f') ;;
       -o|--output)    output="$2"       ; shift;;
-      -g|--grools)    grools="$2"       ; shift;;
+      -j|--jar)    grools="$2"       ; shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift

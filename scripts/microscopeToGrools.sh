@@ -38,7 +38,7 @@ argparse(){
       -f|--falsehood) grools_opts+=('-f') ;;
       -s|--specific)  grools_opts+=('-s') ;;
       -o|--output)    output=$2   ; shift;;
-      -g|--grools)    grools=$2   ; shift;;
+      -j|--jar)       grools=$2   ; shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift
