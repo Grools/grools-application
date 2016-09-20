@@ -13,12 +13,12 @@ grools_opts=( '-u' )
 
 show_help(){
   echo $"$0 [OPTIONS] sequence_id expectation_file
-  -h --help     display this help
-  -v --version  version ${version}
+  -h --help      display this help
+  -v --version   version ${version}
   -f --falsehood enable falsehood mode
-  -s --specific enable specific GROOLS mode
-  -o --output   path to store output result (default: ${output})
-  -j --jar   path to grools-application (default ${grools} )
+  -s --specific  enable specific GROOLS mode
+  -o --output    path to store output result (default: ${output})
+  -j --jar       path to grools-application (default ${grools} )
 
 Note: sequence id parameter can be :
   - a file where each line is an id
