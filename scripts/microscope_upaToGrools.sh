@@ -9,7 +9,7 @@ expectation_file=""
 observations_file=""
 output="$(pwd)"
 IFS_ORI="${IFS}"
-grools_opts=( '-u' )
+grools_opts=( '-u UCR' )
 
 show_help(){
   echo $"$0 [OPTIONS] sequence_id expectation_file

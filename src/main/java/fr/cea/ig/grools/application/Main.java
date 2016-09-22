@@ -37,6 +37,12 @@
 package fr.cea.ig.grools.application;
 
 import ch.qos.logback.classic.Logger;
+import fr.cea.ig.bio.model.obo.Term;
+import fr.cea.ig.bio.model.obo.UCR;
+import fr.cea.ig.bio.model.obo.UER;
+import fr.cea.ig.bio.model.obo.ULS;
+import fr.cea.ig.bio.model.obo.UPA;
+import fr.cea.ig.bio.model.obo.UPC;
 import fr.cea.ig.grools.reasoner.Integrator;
 import fr.cea.ig.grools.reasoner.Mode;
 import fr.cea.ig.grools.reasoner.Reasoner;
@@ -104,7 +110,7 @@ public class Main {
         options.addOption( "h", "help", false, "Display usage" );
         options.addOption( "v", "version", false, "Display application version" );
         options.addOption( "f", "falsehood", false, "Non observed HMM matching to leaves prior-knowledge are considered as False (only with genome-properties)" );
-        options.addOption( "u", "unipathway", false, "use unipathway as graph of prior-knowledge" );
+        options.addOption( "u", "unipathway", true, "use unipathway as graph of prior-knowledge" );
         options.addOption( "g", "genome-properties", false, "use genome-properties as graph of prior-knowledge" );
         options.addOption( "i", "input", true, "use a external file to make prior-knowledge graph" );
         options.addOption( "d", "dispensable", false, "Enable the mode dispensable" );
@@ -250,6 +256,19 @@ public class Main {
         }
         return result;
     }
+
+    private static Class< ?  extends Term > stringToUnipathwayTerm( @NonNull final String term ){
+        Class< ?  extends Term > result;
+        switch ( term ){
+            case "UPA": result = UPA.class; break;
+            case "ULS": result = ULS.class; break;
+            case "UER": result = UER.class; break;
+            case "UCR": result = UCR.class; break;
+            case "UPC": result = UPC.class; break;
+            default: result = UER.class;
+        }
+        return result;
+    }
     
     public static void main( String[] args ) {
 //        final Logger root = (Logger)LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
@@ -319,12 +338,20 @@ public class Main {
         
         
         LOGGER.info( "Generating concept graph..." );
-        final Reasoner grools = new ReasonerImpl( mode );
-        String         input  = null;
+        final Reasoner          grools = new ReasonerImpl( mode );
+        String                  input  = null;
+        Class< ? extends Term>  filter = null;
+        try{
+            filter = stringToUnipathwayTerm( cli.getOptionValue( "unipathway" ) );
+        }
+        catch( Exception e ) {
+            LOGGER.error( "Error while reading: " + cli.getOptionValue( "unipathway" ) );
+            System.exit( 1 );
+        }
         if( cli.hasOption( "unipathway" ) ) {
             if( cli.hasOption( "input" ) )
                 try {
-                    integrator = new OboIntegrator( grools, new File( cli.getOptionValue( "input" ) ), "user resources" );
+                    integrator = new OboIntegrator( grools, new File( cli.getOptionValue( "input" ) ), "user resources", filter );
                 }
                 catch( Exception e ) {
                     LOGGER.error( "Error while reading: " + cli.getOptionValue( "input" ) );
@@ -332,7 +359,7 @@ public class Main {
                 }
             else {
                 try {
-                    integrator = new OboIntegrator( grools );
+                    integrator = new OboIntegrator( grools, filter );
                 }
                 catch( Exception e ) {
                     LOGGER.error( "Error while reading: internal obo file" );
