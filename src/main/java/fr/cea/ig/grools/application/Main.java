@@ -287,7 +287,7 @@ public class Main {
         
         // for debug purpose
         //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
-        //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-24082016/genome-properties/falsehood/UP000000430.csv", "test_Y"};
+        //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/genome-properties/uniprot/falsehood/UP000000430.csv", "test_Y"};
         //args = new String[]{ "-u", "UCR", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/unipathway/microscope/normal/observations.csv", "test_Y"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
@@ -341,23 +341,24 @@ public class Main {
         LOGGER.info( "Generating concept graph..." );
         final Reasoner          grools = new ReasonerImpl( mode );
         String                  input  = null;
-        Class< ? extends Term>  filter = null;
-        try{
-            filter = stringToUnipathwayTerm( cli.getOptionValue( "unipathway" ) );
-        }
-        catch( Exception e ) {
-            LOGGER.error( "Error while reading: " + cli.getOptionValue( "unipathway" ) );
-            System.exit( 1 );
-        }
         if( cli.hasOption( "unipathway" ) ) {
-            if( cli.hasOption( "input" ) )
+            Class< ? extends Term>  filter = null;
+            if( cli.hasOption( "input" ) ) {
+                try {
+                    filter = stringToUnipathwayTerm( cli.getOptionValue( "unipathway" ) );
+                }
+                catch ( Exception e ) {
+                    LOGGER.error( "Error while reading: " + cli.getOptionValue( "unipathway" ) );
+                    System.exit( 1 );
+                }
                 try {
                     integrator = new OboIntegrator( grools, new File( cli.getOptionValue( "input" ) ), "user resources", filter );
                 }
-                catch( Exception e ) {
+                catch ( Exception e ) {
                     LOGGER.error( "Error while reading: " + cli.getOptionValue( "input" ) );
                     System.exit( 1 );
                 }
+            }
             else {
                 try {
                     integrator = new OboIntegrator( grools, filter );
