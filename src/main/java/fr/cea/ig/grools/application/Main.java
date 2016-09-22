@@ -288,6 +288,7 @@ public class Main {
         // for debug purpose
         //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
         //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-24082016/genome-properties/falsehood/UP000000430.csv", "test_Y"};
+        //args = new String[]{ "-u", "UCR", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/unipathway/microscope/normal/observations.csv", "test_Y"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
@@ -454,7 +455,10 @@ public class Main {
                                                   .filter( rel -> rel.getTarget( ).getName( ).startsWith( "UPA" ) )
                                                   .map( rel -> ( PriorKnowledge ) rel.getTarget( ) )
                                                   .collect( Collectors.toSet( ) );
-            tmp.addAll( expectedPriorKnowledge );
+            // do not report expectation over UCR UPC UER ULS from global view only UPA
+            tmp.addAll( expectedPriorKnowledge.stream()
+                                              .filter( pk -> pk.getName().startsWith( "UPA" ) )
+                                              .collect( Collectors.toSet( ) ) );
             tops = new ArrayList<>( tmp );
             tops.sort( ( a, b ) -> a.getName( ).compareTo( b.getName( ) ) );
         }
