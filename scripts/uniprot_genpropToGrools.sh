@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 #set -x
-appname=$(basename $0)
-version='1.0.0'
-grools='./grools-application.jar'
-tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
-proteome=0
-proteome_file=""
-expectation_file=""
-output="$(pwd)"
-IFS_ORI="${IFS}"
-grools_opts=('-d' '-g')
+declare appname=$(basename $0)
+declare version='1.0.0'
+declare grools='./grools-application.jar'
+declare tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
+declare proteome=0
+declare proteome_file=""
+declare expectation_file=""
+declare output="$(pwd)"
+declare grools_opts=('-d' '-g')
 
 show_help(){
   echo $"$0 [OPTIONS] proteome_number expectation_file
@@ -32,7 +31,7 @@ argparse(){
       -v|--version)   show_version      ; exit;;
       -f|--falsehood) grools_opts+=('-f') ;;
       -o|--output)    output="$2"       ; shift;;
-      -j|--jar)    grools="$2"       ; shift;;
+      -j|--jar)       grools="$2"       ; shift;;
       *) echo 'Unexpected parameter '$1 >&2; exit;;
     esac
     shift
