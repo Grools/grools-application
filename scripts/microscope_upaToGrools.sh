@@ -1,15 +1,14 @@
 #!/usr/bin/env bash
 #set -x
-appname=$(basename $0)
-version='1.0.0'
-grools='./grools-application.jar'
-tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
-s_id_list=()
-expectation_file=""
-observations_file=""
-output="$(pwd)"
-IFS_ORI="${IFS}"
-grools_opts=( '-u UCR' )
+declare appname=$(basename $0)
+declare version='1.0.0'
+declare grools='./grools-application.jar'
+declare tmpDir=$(mktemp -d -t ${appname}.XXXXXX)
+declare s_id_list=()
+declare expectation_file=""
+declare observations_file=""
+declare output="$(pwd)"
+declare grools_opts=( '-u' 'UCR' )
 
 show_help(){
   echo $"$0 [OPTIONS] sequence_id expectation_file

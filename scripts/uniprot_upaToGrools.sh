@@ -6,7 +6,7 @@ declare grools='./grools-application.jar'
 declare proteome=0
 declare proteome_file=""
 declare expectation_file=""
-declare grools_opts=( '-u UER' )
+declare grools_opts=( '-u' 'UER' )
 declare output="$(pwd)"
 
 show_help(){
