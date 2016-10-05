@@ -110,7 +110,7 @@ grab_microscope_file(){
       if [[ -z "${microscope_gene}" ]]; then
         microscope_gene='-'
       fi
-      if [[ "${microscope_mutation}" == remnant || "${microscope_mutation}" == partial ]]; then
+      if [[ "${microscope_mutation}" == pseudo || "${microscope_mutation}" == partial ]]; then
         isPresent="F"
       else
         isPresent="T"
