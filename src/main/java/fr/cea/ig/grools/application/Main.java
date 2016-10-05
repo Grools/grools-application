@@ -342,13 +342,14 @@ public class Main {
         final Reasoner          grools = new ReasonerImpl( mode );
         String                  input  = null;
         if( cli.hasOption( "unipathway" ) ) {
-            Class< ? extends Term>  filter = null;
             if( cli.hasOption( "input" ) ) {
+                Class< ? extends Term>  filter = null;
                 try {
                     filter = stringToUnipathwayTerm( cli.getOptionValue( "unipathway" ) );
                 }
                 catch ( Exception e ) {
                     LOGGER.error( "Error while reading: " + cli.getOptionValue( "unipathway" ) );
+                    LOGGER.error( "Once of followed items is required: UPA, ULS, UER, UCR, UPC" );
                     System.exit( 1 );
                 }
                 try {
@@ -361,7 +362,7 @@ public class Main {
             }
             else {
                 try {
-                    integrator = new OboIntegrator( grools, filter );
+                    integrator = new OboIntegrator( grools );
                 }
                 catch( Exception e ) {
                     LOGGER.error( "Error while reading: internal obo file" );
