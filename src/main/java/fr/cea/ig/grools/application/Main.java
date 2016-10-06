@@ -288,7 +288,7 @@ public class Main {
         // for debug purpose
         //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
         //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/genome-properties/uniprot/falsehood/UP000000430.csv", "test_Y"};
-        //args = new String[]{ "-u", "UCR", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/unipathway/microscope/normal/observations.csv", "test_Y"};
+        args = new String[]{ "-u", "UCR", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/unipathway/microscope/normal/observations.csv", "test_Y"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
@@ -342,16 +342,16 @@ public class Main {
         final Reasoner          grools = new ReasonerImpl( mode );
         String                  input  = null;
         if( cli.hasOption( "unipathway" ) ) {
+            Class< ? extends Term>  filter = null;
+            try {
+                filter = stringToUnipathwayTerm( cli.getOptionValue( "unipathway" ) );
+            }
+            catch ( Exception e ) {
+                LOGGER.error( "Error while reading: " + cli.getOptionValue( "unipathway" ) );
+                LOGGER.error( "Once of followed items is required: UPA, ULS, UER, UCR, UPC" );
+                System.exit( 1 );
+            }
             if( cli.hasOption( "input" ) ) {
-                Class< ? extends Term>  filter = null;
-                try {
-                    filter = stringToUnipathwayTerm( cli.getOptionValue( "unipathway" ) );
-                }
-                catch ( Exception e ) {
-                    LOGGER.error( "Error while reading: " + cli.getOptionValue( "unipathway" ) );
-                    LOGGER.error( "Once of followed items is required: UPA, ULS, UER, UCR, UPC" );
-                    System.exit( 1 );
-                }
                 try {
                     integrator = new OboIntegrator( grools, new File( cli.getOptionValue( "input" ) ), "user resources", filter );
                 }
@@ -362,7 +362,7 @@ public class Main {
             }
             else {
                 try {
-                    integrator = new OboIntegrator( grools );
+                    integrator = new OboIntegrator( grools, filter );
                 }
                 catch( Exception e ) {
                     LOGGER.error( "Error while reading: internal obo file" );
