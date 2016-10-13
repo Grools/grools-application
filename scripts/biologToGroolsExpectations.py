@@ -3,8 +3,7 @@ import csv
 import argparse
 import re
 import sys
-from os.path import isfile, isdir, dirname, exists
-from os import makedirs
+from os.path import isfile
 
 compounds = { "PM01": "carbon", "PM02" : "carbon", "PM03" : "nitrogen", "PM04" : "sulfur" }
 ids       = {}
@@ -87,13 +86,6 @@ def write_expectation( out, biolog, mapper ):
 def main():
     args   = parse_commandline()
     mapper = load_mapper( args.MAPPER )
-
-    directory = dirname( args.OUTPUT.name )
-    if not exists( directory ):
-        makedirs( directory )
-    elif not isdir( directory ):
-        eprint( "Error: " + directory + " is not a directory!" )
-
 
     with args.OUTPUT as out:
         out.write( '"Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"\n' )
