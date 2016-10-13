@@ -8,6 +8,7 @@ declare    biolog=''
 declare    mapper=''
 declare    output=''
 declare -a reader_results=()
+declare -A ids
 
 show_help(){
     echo "$0"' MAPPER OUTPUT BIOLOG...'
@@ -119,14 +120,13 @@ write_expectation(){
     local -r biolog="$2"
     local name=''
     local name_id=''
-    local -i counter
     local evidence=''
     local -r obs_type='EXPERIMENTATION'
     local obs_source_suffix='BIOLOG experimentation: '
     local obs_source=''
     local label=''
     local desc=''
-    local -A ids
+    local -i counter=0
     local -A compounds=( [PM01]=carbon [PM02]=carbon [PM03]=nitrogen [PM04]=sulfur )
     {
     read -r
@@ -153,7 +153,7 @@ write_expectation(){
                 counter=${ids[${name}]}
                 ((counter++))
             else
-                counter=1    
+                counter=1
             fi
             name_id=${name}'_'${counter}
             ids[${name}]=${counter}
