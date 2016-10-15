@@ -63,8 +63,9 @@ Name;EvidenceFor;Type;isPresent;Source;Label;Description
 - **Description:** is a complete description of the observation
 
 #### Examples
-- This [file](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/genome-properties/falsehood/UP000000430.csv) contains all Acinetobacter baylyi ADP1 observations from UniProt (PFAM and TIGRFAM) and Biolog results related to Genome Properties.
-- This [file](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/unipathway/specific/observations.csv) contains all Acinetobacter baylyi ADP1 observations from MicroScope (EC number, RHEA and MetaCyc reactions) and Biolog results related to UniPathway.
+- Files containing Acinetobacter baylyi ADP1 observations for:
+* UniProt (PFAM and TIGRFAM) and Biolog results related to Genome Properties ([link](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/genome-properties/uniprot/falsehood/UP000000430.csv))
+* MicroScope (EC number, RHEA and MetaCyc reactions) and Biolog results related to UniPathway ([link](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/unipathway/microscope/specific/observations.csv))
 
 ## Build from source
 
