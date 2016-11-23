@@ -38,11 +38,11 @@ package fr.cea.ig.grools.application;
 
 import ch.qos.logback.classic.Logger;
 import fr.cea.ig.bio.model.obo.Term;
-import fr.cea.ig.bio.model.obo.UCR;
-import fr.cea.ig.bio.model.obo.UER;
-import fr.cea.ig.bio.model.obo.ULS;
-import fr.cea.ig.bio.model.obo.UPA;
-import fr.cea.ig.bio.model.obo.UPC;
+import fr.cea.ig.bio.model.obo.unipathway.UCR;
+import fr.cea.ig.bio.model.obo.unipathway.UER;
+import fr.cea.ig.bio.model.obo.unipathway.ULS;
+import fr.cea.ig.bio.model.obo.unipathway.UPA;
+import fr.cea.ig.bio.model.obo.unipathway.UPC;
 import fr.cea.ig.grools.reasoner.Integrator;
 import fr.cea.ig.grools.reasoner.Mode;
 import fr.cea.ig.grools.reasoner.Reasoner;
@@ -289,10 +289,16 @@ public class Main {
         //args = new String[]{ "-f", "-g", "UP000000813.csv", "test"};
         //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/genome-properties/uniprot/falsehood/UP000000430.csv", "test_Y"};
         //args = new String[]{ "-u", "UCR", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-20161006/unipathway/microscope/normal/observations.csv", "test_Y"};
+        args = new String[]{ "-u", "UCR", "-s", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-20161123/unipathway/microscope/specific/observations.csv", "test_Y"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
-        
+
+
+        if( cli == null ) {
+            LOGGER.error( APPNAME + " Fail to parse command line" );
+            System.exit( 1 );
+        }
         if( cli.getArgs( ).length != 2 ) {
             LOGGER.error( APPNAME + " expect a CSV file and an output directory" );
             System.exit( 1 );
@@ -522,7 +528,8 @@ public class Main {
             LOGGER.error( "Error while closing reasoner" );
             System.exit( 1 );
         }
-        
+
+        System.exit( 0 );
     }
     
 }
