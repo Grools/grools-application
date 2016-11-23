@@ -74,8 +74,8 @@ repositories {
 dependencies {
     compile     group: 'org.projectlombok'  , name: 'lombok'                            , version: lombokVersion
     compile     group: theGroup             , name: 'grools-reasoner'                   , version: groolsReasonerVersion
-    compile     group: theGroup             , name: 'grools-genome-properties'          , version: genomePropertiesVersion
-    compile     group: theGroup             , name: 'grools-obo'                        , version: oboVersion
+    compile     group: theGroup             , name: 'grools-genome-properties-plugins'  , version: genomePropertiesPluginsVersion
+    compile     group: theGroup             , name: 'grools-unipathway-plugins'         , version: unipathwayPluginsVersion 
     compile     group: theGroup             , name: 'grools-reporter'                   , version: checkerReporterVersion
     compile     group: theGroup             , name: 'bio-scribe'                        , version: bioScribeVersion
     compile     group: 'commons-cli'        , name: 'commons-cli'                       , version: commonsCliVersion

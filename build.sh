@@ -15,7 +15,7 @@ die () {
 
 trap 'die ${LINENO}' 1 15 ERR
 
-declare -ar projects=(Grools/grools-reasoner institut-de-genomique/bio-scribe Grools/grools-genome-properties-plugins Grools/grools-obo-plugins Grools/grools-reporter)
+declare -ar projects=(Grools/grools-reasoner institut-de-genomique/bio-scribe Grools/grools-genome-properties-plugins Grools/grools-unipathway-plugins Grools/grools-reporter)
 
 command -v dot >/dev/null 2>&1 || { echo >&2 "I require dot but it's not installed.  Aborting."; exit 1; }
 runner="gradle"
