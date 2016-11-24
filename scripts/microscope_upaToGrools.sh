@@ -147,6 +147,8 @@ done
 tail -n +2 ${expectation_file} >> "${observations_file}"
 
 
-java -jar -server -XX:+UseParallelGC -Xmx4g -Xms2g ${grools} ${grools_opts[@]} "${observations_file}" "${output}"
+java -jar -server -XX:+UseParNewGC -XX:+UseConcMarkSweepGC -Xmn256m \
+     -XX:+UseStringDeduplication -XX:CMSInitiatingOccupancyFraction=70 \
+     -Xms2g -Xmx4g ${grools} ${grools_opts[@]} "${observations_file}" "${output}"
 
 echo "Visualize results $(readlink -m ${output}/index.html)"

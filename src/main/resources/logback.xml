@@ -38,15 +38,6 @@
     <contextName>GROOLS application</contextName>
     <jmxConfigurator/>
 
-    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
-        <file>grools.log</file>
-        <append>false</append>
-        <encoder>
-            <charset>UTF-8</charset>
-            <pattern>%-5level - %msg%n</pattern>
-        </encoder>
-    </appender>
-
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
             <charset>UTF-8</charset>
@@ -61,14 +52,6 @@
 
     <logger name="fr.cea.ig" level="INFO" additivity="false">
         <appender-ref ref="STDOUT"/>
-    </logger>
-
-    <logger name="fr.cea.ig.grools.drools" level="OFF">
-        <appender-ref ref="FILE"/>
-    </logger>
-
-    <logger name="org.drools" level="OFF">
-        <appender-ref ref="FILE"/>
     </logger>
 
     <root level="INFO">
