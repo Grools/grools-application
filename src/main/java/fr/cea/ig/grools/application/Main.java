@@ -486,7 +486,7 @@ public class Main {
         
         Reporter reporter = null;
         try {
-            reporter = new Reporter( cli.getArgs( )[ 1 ] );
+            reporter = new Reporter( cli.getArgs( )[ 1 ], mode );
         }
         catch( Exception e ) {
             LOGGER.error( "while creating report into: " + cli.getArgs( )[ 1 ] );
