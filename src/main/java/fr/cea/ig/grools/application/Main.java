@@ -47,7 +47,7 @@ import fr.cea.ig.grools.reasoner.Integrator;
 import fr.cea.ig.grools.reasoner.Mode;
 import fr.cea.ig.grools.reasoner.Reasoner;
 import fr.cea.ig.grools.genome_properties.GenomePropertiesIntegrator;
-import fr.cea.ig.grools.obo.OboIntegrator;
+import fr.cea.ig.grools.obo.UniPathwayIntegrator;
 import fr.cea.ig.grools.reasoner.ReasonerImpl;
 import fr.cea.ig.grools.fact.Observation;
 import fr.cea.ig.grools.fact.ObservationImpl;
@@ -359,7 +359,7 @@ public class Main {
             }
             if( cli.hasOption( "input" ) ) {
                 try {
-                    integrator = new OboIntegrator( grools, new File( cli.getOptionValue( "input" ) ), "user resources", filter );
+                    integrator = new UniPathwayIntegrator( grools, new File( cli.getOptionValue( "input" ) ), "user resources", filter );
                 }
                 catch ( Exception e ) {
                     LOGGER.error( "Error while reading: " + cli.getOptionValue( "input" ) );
@@ -368,7 +368,7 @@ public class Main {
             }
             else {
                 try {
-                    integrator = new OboIntegrator( grools, filter );
+                    integrator = new UniPathwayIntegrator( grools, filter );
                 }
                 catch( Exception e ) {
                     LOGGER.error( "Error while reading: internal obo file" );
