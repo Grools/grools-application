@@ -9,6 +9,7 @@ declare proteome_file=""
 declare expectation_file=""
 declare output="$(pwd)"
 declare grools_opts=('-d' '-g')
+declare -A ids
 
 show_help(){
   echo $"$0 [OPTIONS] proteome_number expectation_file
@@ -48,12 +49,22 @@ argparse(){
   proteome_file="${output}"'/'"${proteome}"'.csv'
 }
 
+id_is_present () {
+    # If the given key maps to a non-empty string (-n), the
+    # key obviously exists. Otherwise, we need to check if
+    # the special expansion produces an empty string or an
+    # arbitrary non-empty string.
+    [[ -n ${ids[$1]} || -z ${ids[$1]-foo} ]] && return 1 || return 0
+}
+
 
 grab_uniprot_file(){
   local label=""
+  local tmplabel=""
   local evidenceFor=""
   local -r type="COMPUTATION"
   local -r isPresent="T"
+  local -i id_counter=0
   local source=""
   local name=""
   local description=""
@@ -70,7 +81,13 @@ grab_uniprot_file(){
       priorknowledges="${pfams}${tigrfams}"
       while IFS=';' read -ra PKS; do
         for i in "${PKS[@]}"; do
+          id_counter=0
           label=${entry}'_'${i}
+          while ! id_is_present "${tmplabel}"; do
+            ((id_counter++))
+             tmplabel="${label}_${id_counter}"
+          done
+          label="${tmplabel}"
           evidenceFor=${i}
           if [[ ${evidenceFor} == PF* ]]; then
             source="PFAM"

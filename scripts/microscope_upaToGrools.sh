@@ -9,6 +9,7 @@ declare expectation_file=""
 declare observations_file=""
 declare output="$(pwd)"
 declare grools_opts=( '-u' 'UCR' )
+declare -A ids
 
 show_help(){
   echo $"$0 [OPTIONS] sequence_id expectation_file
@@ -60,6 +61,14 @@ argparse(){
   observations_file="${output}"'/observations.csv'
 }
 
+id_is_present () {
+    # If the given key maps to a non-empty string (-n), the
+    # key obviously exists. Otherwise, we need to check if
+    # the special expansion produces an empty string or an
+    # arbitrary non-empty string.
+    [[ -n ${ids[$1]} || -z ${ids[$1]-foo} ]] && return 1 || return 0
+}
+
 observation_writer(){
   local -r line="${1}"
   local -r splitter="${2}"
@@ -69,14 +78,23 @@ observation_writer(){
   local -r microscope_product="${6}"
   local -r type="${7}"
   local -r isPresent="${8}"
+  local -i id_counter=0
   local label=""
+  local tmplabel=""
   local evidenceFor=""
   local name=""
   local description=""
   local priorknowledges=""
   while IFS="${splitter}" read -ra PKS; do
     for i in "${PKS[@]}"; do
-      label=${microscope_label}'_'${i}
+      id_counter=0
+      label="${microscope_label}"'_'"${i}"
+      tmplabel="${label}"
+      while ! id_is_present "${tmplabel}"; do
+        ((id_counter++))
+         tmplabel="${label}_${id_counter}"
+      done
+      label="${tmplabel}"
       evidenceFor=${i}
       if [[ "${microscope_gene}" == '-' ]]; then
         name=${microscope_label}
