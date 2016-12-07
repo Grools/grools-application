@@ -36,6 +36,7 @@
 
 package fr.cea.ig.grools.application;
 
+import ch.qos.logback.classic.Level;
 import ch.qos.logback.classic.Logger;
 import fr.cea.ig.bio.model.obo.Term;
 import fr.cea.ig.bio.model.obo.unipathway.UCR;
@@ -290,6 +291,7 @@ public class Main {
         //args = new String[]{ "-g", "-f", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-22092016/genome-properties/uniprot/falsehood/UP000000430.csv", "test_Y"};
         //args = new String[]{ "-u", "UCR", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-20161006/unipathway/microscope/normal/observations.csv", "test_Y"};
         // args = new String[]{ "-u", "UCR", "-s", "/media/sf_agc/proj/Grools/res/UP000000430-AbaylyiADP1/grools-20161124/unipathway/microscope/normal/observations.csv", "test_Y"};
+        // args = new String[]{ "-u", "UCR", "-s", "/media/sf_agc/proj/Grools/res/UP000000625-EcoliK-12/grools-20161206/unipathway/microscope/specific/observations.csv", "/media/sf_agc/proj/Grools/res/UP000000625-EcoliK-12/grools-20161206/unipathway/microscope/specific/"};
         final CommandLine   cli   = parseArgs( args );
         Reader              in    = null;
         Iterable<CSVRecord> lines = null;
@@ -459,7 +461,7 @@ public class Main {
                                                   .stream( )
                                                   .filter( rel -> rel.getSource( ) instanceof PriorKnowledge )
                                                   .filter( rel -> rel.getTarget( ) instanceof PriorKnowledge )
-                                                  .filter( rel -> ( rel.getSource( ).getName( ).startsWith( "ULS" ) || rel.getSource( ).getName( ).startsWith( "variant" ) ) )
+                                                  .filter( rel -> ( ! rel.getSource( ).getName( ).startsWith( "UPA" ) ) )
                                                   .filter( rel -> rel.getTarget( ).getName( ).startsWith( "UPA" ) )
                                                   .map( rel -> ( PriorKnowledge ) rel.getTarget( ) )
                                                   .collect( Collectors.toSet( ) );
@@ -486,7 +488,7 @@ public class Main {
         
         Reporter reporter = null;
         try {
-            reporter = new Reporter( cli.getArgs( )[ 1 ], mode );
+            reporter = new Reporter( cli.getArgs( )[ 1 ], grools );
         }
         catch( Exception e ) {
             LOGGER.error( "while creating report into: " + cli.getArgs( )[ 1 ] );
