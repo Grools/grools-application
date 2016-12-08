@@ -28,7 +28,7 @@ def load_mapper( mapper_file ):
         for row in csv.reader( f, delimiter='\t', quotechar='"' ):
             if len(row) == 5 :
                 # warn if position row x plate appear twice only latest stored values is kept
-                mapper[ row[0] + "_" + row[1] ] = ( row[2], row[3], row[4] ) # [ nrj_source, prior-knowledge id, description ]
+                mapper[ row[0].strip() + "_" + row[1].strip() ] = ( row[2].strip(), row[3].strip(), row[4].strip() ) # [ nrj_source, prior-knowledge id, description ]
     return mapper
 
 
