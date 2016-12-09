@@ -5,9 +5,20 @@ import re
 import sys
 from os.path import isfile
 
+# Calling the 'checkInstallation' function checks if Python is >= 2.7 and < 3
+requiredVersion = (3,5)
 compounds = { "PM01": "carbon", "PM02" : "carbon", "PM03" : "nitrogen", "PM04" : "sulfur" }
 ids       = {}
 
+
+def check_installation(rv):
+    current_version = sys.version_info
+    if current_version[0] == rv[0] and current_version[1] >= rv[1]:
+        pass
+    else:
+        sys.stderr.write( "{} - Error: Your Python interpreter must be {}.{} or greater (within major version {})\n".format(sys.argv[0], rv[0], rv[1], rv[0]) )
+        sys.exit(-1)
+    return 0
 
 def eprint(*args, **kwargs):
     print(*args, file=sys.stderr, **kwargs)
@@ -17,7 +28,7 @@ def parse_commandline():
     parser = argparse.ArgumentParser()
     parser.add_argument( "MAPPER", type=argparse.FileType('r'), help='is a tabulated file: "Plate" "Position" "Property name" "Property id" "Description"' )
     parser.add_argument( "OUTPUT", type=argparse.FileType('w'), help='is a file path to store well formatted expectation' )
-    parser.add_argument( "BIOLOGS", type=argparse.FileType('r'), nargs='+', help='is a list of tabulated file faormated as: "Plate" "Position" "Observation"' )
+    parser.add_argument( "BIOLOGS", type=argparse.FileType('r'), nargs='+', help='is a list of tabulated file formated as: "Plate" "Position" "Observation"' )
     return parser.parse_args()
 
 
@@ -84,6 +95,7 @@ def write_expectation( out, biolog, mapper ):
 
 
 def main():
+    check_installation(requiredVersion)
     args   = parse_commandline()
     mapper = load_mapper( args.MAPPER )
 
