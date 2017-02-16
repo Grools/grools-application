@@ -174,29 +174,40 @@ grab_uniprot_file(){
                 fi
                 source=''
             done
-        } < <(curl -s -G -H "Accept: text/csv"   http://sparql.uniprot.org/sparql --data-urlencode  query='
+        } < <(curl -s -G -H "Accept: text/csv" http://sparql.uniprot.org/sparql --data-urlencode  query='
 PREFIX up:<http://purl.uniprot.org/core/>
 PREFIX uniprot:<http://purl.uniprot.org/uniprot/>
 PREFIX proteomes:<http://purl.uniprot.org/proteomes/>
 PREFIX skos:<http://www.w3.org/2004/02/skos/core#>
-SELECT ?protein ?description ?gene_name  ?ec ?pathwayAnnotationXref
+SELECT ?protein (group_concat(CONCAT(?recdesc, ?subdesc) ; separator=" ") AS ?description)  (group_concat(distinct ?gene_name ; separator="-") AS ?gene_name)   ?ec ?pathwayAnnotationXref
 WHERE {
   ?protein a up:Protein .
-  ?protein up:encodedBy ?gene .
-  ?gene skos:prefLabel ?gene_name .
-  ?protein up:recommendedName ?recommended .
-  ?recommended up:fullName ?description .
   ?protein up:proteome ?proteomeComponent .
   ?proteome skos:narrower ?proteomeComponent .
+  OPTIONAL {
+  ?protein up:encodedBy ?gene .
+  ?gene skos:prefLabel ?gene_name .
+  }
+  OPTIONAL {
+  ?protein up:recommendedName ?recommended .
+  ?recommended up:fullName ?recdesc .
+  }
+  OPTIONAL {
+  ?protein up:submittedName ?submitted .
+  ?submitted up:fullName ?subdesc .
+  }
   {
-    ?protein up:annotation ?pathwayAnnotation .
-    ?pathwayAnnotation a up:Pathway_Annotation  .
-    ?pathwayAnnotation rdfs:seeAlso ?pathwayAnnotationXref .
+  ?protein up:annotation ?pathwayAnnotation .
+  ?pathwayAnnotation a up:Pathway_Annotation  .
+  ?pathwayAnnotation rdfs:seeAlso ?pathwayAnnotationXref .
    }
   UNION
-  { ?protein up:enzyme ?ec . }
+  {
+  ?protein up:enzyme ?ec .
+  }
   FILTER (?proteome = proteomes:'"${proteome}"')
-}')
+}
+group by ?protein ?ec ?pathwayAnnotationXref'
     } > "${proteome_file}"
 
 }
