@@ -5,8 +5,10 @@ GROOLS is a powerful reasoner representing knowledge as graph and dealing with u
 
 
 ## How to cite
-- Method: [![DOI](https://img.shields.io/badge/DOI-10.1101%2F117994-green.svg)](https://doi.org/10.1101/117994)
-- Application: [![DOI](https://zenodo.org/badge/61386938.svg)](https://zenodo.org/badge/latestdoi/61386938)
+
+| Method      | [![DOI](https://img.shields.io/badge/DOI-10.1101%2F117994-green.svg)](https://doi.org/10.1101/117994) |
+|-------------|-------------------------------------------------------------------------------------------------------|
+| Application | [![DOI](https://zenodo.org/badge/61386938.svg)](https://zenodo.org/badge/latestdoi/61386938)          |
 
 
 ## Biological application
