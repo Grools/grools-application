@@ -68,7 +68,6 @@ repositories {
     mavenLocal()
     mavenCentral()
     maven { url "http://repository.jboss.org/nexus/content/groups/public" }
-    maven { url "https://gsphere.genoscope.cns.fr/nexus/content/groups/public" }
 }
 
 dependencies {
@@ -155,8 +154,3 @@ extraArchive {
     javadoc  = true
 }
 
-nexus {
-    sign                  = false
-    repositoryUrl         = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/releases/'
-    snapshotRepositoryUrl = 'https://gsphere.genoscope.cns.fr/nexus/content/repositories/snapshots/'
-}
