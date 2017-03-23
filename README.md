@@ -212,6 +212,8 @@ $ ./scripts/biologToGroolsExpectations.py examples/biolog/pk_observation_mapper/
 ```
 
 This command generate a file `biolog_list_of_expectations_upa.csv`
+
+```csv
 "Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"
 "PM01_A02_1";"UPA00463";"EXPERIMENTATION";"F";"BIOLOG experimentation: 101117";"L-arabinose degradation";"No growth with L-Arabinose as carbon source"
 "PM01_A08_1";"UPA00532";"EXPERIMENTATION";"T";"BIOLOG experimentation: 101117";"L-proline degradation";"Growth with L-Proline as carbon source"
@@ -230,7 +232,7 @@ This command generate a file `biolog_list_of_expectations_upa.csv`
 "PM01_G04_1";"UPA00493";"EXPERIMENTATION";"F";"BIOLOG experimentation: 101117";"L-threonine degradation";"No growth with L-Threonine as carbon source"
 "PM01_H10_1";"UPA01047";"EXPERIMENTATION";"F";"BIOLOG experimentation: 101117";"D-galacturonate degradation";"No growth with D-Galacturonic Acid as carbon source"
 "PM01_H12_1";"UPA00560";"EXPERIMENTATION";"F";"BIOLOG experimentation: 101117";"ethanolamine degradation";"No growth with Ethanolamine as carbon source"
-
+```
 
 You have to merge these observations with Biolog experimations observations.
 ```bash
