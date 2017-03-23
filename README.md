@@ -25,20 +25,50 @@ As a test case, the reasoner was launched on 14 prokaryotic genomes/proteomes us
 
 Results of this test case are available [here](http://www.genoscope.cns.fr/agc/grools/).
 
+## Installation
+
+GROOLS application requires: 
+- java 1.8 or later
+- dot from [Graphviz](https://github.com/ellson/graphviz)
+
+### From release
+Download and unzip GROOLS.zip file for the last [realease](https://github.com/Grools/grools-application/releases)
+
+### Build from source
+
+```bash
+git clone https://github.com/Grools/grools-application
+pushd grools-application
+bash build.sh
+popd
+```
+The executable jar file will be located in `grools-application/build/libs/` directory
+
+Java library dependencies that are downloaded and installed
+- [grools-reasoner](https://github.com/Grools/grools-reasoner)
+- [bio-scribe](https://github.com/institut-de-genomique/bio-scribe)
+- [grools-genome-properties](https://github.com/Grools/grools-genome-properties-plugins)
+- [grools-obo](https://github.com/Grools/grools-obo-plugins)
+- [grools-reporter](https://github.com/Grools/grools-reporter)
+
+## Usage
+
 ### Usage from shell script
 
-Two shell scripts are available to grab annotations from MicroScope or UniProt using UniPathway or Genome Properties as prior-knowledge, respectively.
+Three shell scripts are available to grab annotations from MicroScope or UniProt using UniPathway or Genome Properties as prior-knowledge, respectively.
 
-Shell scripts are easy to use. Once grools-application is build, you have to provide:
-- the path to the jar file
-- organism/proteome identifier
-- expectation file in GROOLS CSV format
-
+UniProt TIGRFAM/PFAM predictions with Genome Properties
 ```bash
-./scripts/uniprotTogrools.sh -g build/libs/grools-application-1.0.0.jar UP000000625 ~/expectation.csv
+./scripts/uniprot_genpropToGrools.sh
 ```
+
+UniProt annotations with UniPathway
 ```bash
-./scripts/microscopeTogrools.sh -g build/libs/grools-application-1.0.0.jar 36 ~/expectation.csv
+./scripts/uniprot_upaToGrools.sh
+```
+MicroScope  annotations with UniPathway
+```bash
+./scripts/microscope_upaToGrools.sh  
 ```
 
 ### Usage from jar file
@@ -72,28 +102,4 @@ Files containing Acinetobacter baylyi ADP1 observations for:
 - UniProt (PFAM and TIGRFAM) and Biolog results related to Genome Properties ([link](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/genome-properties/uniprot/falsehood/UP000000430.csv))
 - MicroScope (EC number, RHEA and MetaCyc reactions) and Biolog results related to UniPathway ([link](https://www.genoscope.cns.fr/agc/grools/UP000000430-AbaylyiADP1/unipathway/microscope/specific/observations.csv))
 
-## Build from source
 
-Grools-application requires to pre-install some libraries:
-- dot from [Graphviz](https://github.com/ellson/graphviz)
-- [grools-reasoner](https://github.com/Grools/grools-reasoner)
-- [bio-scribe](https://github.com/institut-de-genomique/bio-scribe)
-- [grools-genome-properties](https://github.com/Grools/grools-genome-properties-plugins)
-- [grools-obo](https://github.com/Grools/grools-obo-plugins)
-- [grools-reporter](https://github.com/Grools/grools-reporter)
-
-These projects use the powerful Gradle as build system. 
-If you do not want or cannot install `gradle`, you may use the corresponding wrapper on each project:
-- gradlew for unix
-- gradlew.bat for windows
-
-### Commands to build it
-
-```bash
-git clone https://github.com/Grools/grools-application
-pushd grools-application
- bash build.sh
-popd
-```
-
-The executable jar file will be located in `grools-application/build/libs/` directory
