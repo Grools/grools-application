@@ -241,7 +241,9 @@ $ tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecat
 
 #### Run GROOLS application
 
-##### With MicroScope annotation
+##### With MicroScope annotationO
+
+Organism A. baylyi ADP1 have trhe sequences id `36` in MiscroScope  platform
 
 Normal reasoning mode:
 
