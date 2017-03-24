@@ -201,6 +201,8 @@ Sample of a file after discretization of Biolog numerical values:
 ".//01_Abaylyi_PM1_A_101117.csv"	"PM01"	"15-A"	"Nov 17 2010 5:28 PM"	"A04"	28.2949132058871	2.32411771576596	280.974739519407	24314.2418801986	24.6195674041815	-1.88104660891929	279.792049404854	24166.4620590466	33.2211611953979	8.79005432069948	282.364609613145	24389.7797251403	"opm"	"1.3.51"	"grofit"	TRUE	"opm"	"1.3.51"	"kmeans"
 ```
 
+These tabulated files are converted to GROOLS csv file format using `biologToGroolsExpectations.py` script as follow:
+
 ```bash
 $ ./scripts/biologToGroolsExpectations.py examples/biolog/pk_observation_mapper/biolog_plates_cells_name_evidencesForUPA_description.tsv biolog_list_of_expectations_upa.csv  examples/biolog/AbaylyiADP1/*.tab
 ```
