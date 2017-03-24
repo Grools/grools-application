@@ -193,6 +193,21 @@ $ tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecat
 
 #### Using UniProt annotations
 
+The proteom id of A. baylyi ADP1 is `UP000000430` in UniProt. 
+
+Normal reasoning mode:
+
+```bash
+$ ./scripts/uniprot_upaToGrools.sh -o res/uniprot_upa_normal UP000000430 complete_list_of_expecations_upa.csv
+```
+Specific reasoning mode:
+
+```bash
+$ ./scripts/uniprot_upaToGrools.sh -s -o res/uniprot_upa_normal UP000000430 complete_list_of_expecations_upa.csv
+```
+
+Results are viewable with a browser, open: `res/uniprot_upa_normal/index.html` or  `res/uniprot_upa_specific/index.html`
+
 
 #### Using MicroScope annotations
 
