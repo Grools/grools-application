@@ -243,7 +243,7 @@ $ tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecat
 
 ##### With MicroScope annotationO
 
-Organism A. baylyi ADP1 have trhe sequences id `36` in MiscroScope  platform
+Organism A. baylyi ADP1 own the sequence id `36` in MiscroScope  platform. 
 
 Normal reasoning mode:
 
