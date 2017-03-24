@@ -125,9 +125,9 @@ examples/
 
 ##### Background knowkedge
 
-Often you expect to retrieve a list of metabolic pathways as you have acquire a background knwoledge on your studied organism (from your experience and the litterarure). Thus we provides a tool to convert your expectations list to GROOLS csv file format.
-You have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all acido amino biosynthesis pathways for metabolites.
-These expectations are stored into the file `expectation_upa_aa.csv` as follow :
+Often you expect to retrieve a list of metabolic pathways as you have acquired a background knwoledge on your studied organism (from your experience and the litterarure). Thus we provides a tool to convert your expectations list to GROOLS csv file format.
+You have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all amino acid biosynthesis pathways.
+Such expectations are stored into the file `expectation_upa_aa.csv` as follow :
 
 ```csv
 $ cat examples/expectation_upa_aa.csv
@@ -190,7 +190,7 @@ Indeed you can to write directly this file.
 
 ##### Biolog experimentations
 
-Biolog experimations observations are representated with numerical growth values. That is why this quantitative growth phenotype data should be first discretized to three states `FALSE` (no growth), `TRUE` (growth), `NA` (growth maybe). To achieve this, we use the [omp](http://bioinformatics.oxfordjournals.org/content/29/14/1823.short) R package with "grofit" aggregation method and weak discretization (-a, -w and -z options of run_opm.R program).
+Biolog experimations observations are representated with numerical growth values. That is why, these quantitatives growth phenotypes data should be first discretized to three states `FALSE` (no growth), `TRUE` (growth), `NA` (growth maybe). To achieve this, we use the [omp](http://bioinformatics.oxfordjournals.org/content/29/14/1823.short) R package with "grofit" aggregation method and weak discretization (-a, -w and -z options of run_opm.R program).
 Sample of a file after discretization of Biolog numerical values:
 
 ```csv
