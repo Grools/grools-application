@@ -121,10 +121,13 @@ examples/
 
 ### Using UniPathway as Prior-Knowledge graph
 
-#### Expectations: grab and format tasks
+#### Expectations: grab and formatting tasks
 
-Firstly you have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all acido amino biosynthesis pathways for metabolites.
-These expectations are stored into the file `expectation_upa_aa.csv` :
+##### Background knowkedge
+
+Often you expect to retrieve a list of metabolic pathways as you have acquire a background knwoledge on your studied organism (from your experience and the litterarure). Thus we provides a tool to convert your expectations list to GROOLS csv file format.
+You have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all acido amino biosynthesis pathways for metabolites.
+These expectations are stored into the file `expectation_upa_aa.csv` as follow :
 
 ```csv
 $ cat examples/expectation_upa_aa.csv
@@ -151,7 +154,7 @@ UPA01012;L-aspartate biosynthesis
 UPA01013;L-glutamine biosynthesis
 ```
 
-This file need to be converted to GROOLS csv file format (see section [GROOLS CSV file format](#grools-csv-file-format)).
+Once this file is made you ave to convert this list to GROOLS csv file format (see section [GROOLS CSV file format](#grools-csv-file-format)).
 To perform this task run:
 
 ```bash
@@ -183,8 +186,11 @@ This command generate a file `expectation_upa_aa.grools.csv`:
 "Exp_UPA01012";"UPA01012";"EXPERIMENTATION";"T";"";"Exp_UPA01012";"L-aspartate biosynthesis"
 "Exp_UPA01013";"UPA01013";"EXPERIMENTATION";"T";"";"Exp_UPA01013";"L-glutamine biosynthesis"
 ```
+Indeed you can to write directly this file.
 
-Now you have representated your background knwoledge in GROOLS csv format, you have to convert Biolog experimations observations into GROOLS csv format. As Biolog experimentation results are representated with numerical growth values. This quantitative growth phenotype data should be first discretized using the [omp](http://bioinformatics.oxfordjournals.org/content/29/14/1823.short) R package with "grofit" aggregation method and weak discretization (-a, -w and -z options of run_opm.R program). Observations are discretized to three states: `FALSE` (no growth), `TRUE` (growth), `NA` (growth maybe).
+##### Biolog experimentations
+
+Biolog experimations observations are representated with numerical growth values. That is why this quantitative growth phenotype data should be first discretized to three states `FALSE` (no growth), `TRUE` (growth), `NA` (growth maybe). To achieve this, we use the [omp](http://bioinformatics.oxfordjournals.org/content/29/14/1823.short) R package with "grofit" aggregation method and weak discretization (-a, -w and -z options of run_opm.R program).
 Sample of a file after discretization of Biolog numerical values:
 
 ```csv
@@ -222,7 +228,10 @@ This command generate a file `biolog_list_of_expectations_upa.csv`
 "PM01_H12_1";"UPA00560";"EXPERIMENTATION";"F";"BIOLOG experimentation: 101117";"ethanolamine degradation";"No growth with Ethanolamine as carbon source"
 ```
 
-You have to merge these observations with Biolog experimations observations.
+##### Unification of background knwoledge and Biololg experimentations
+
+To merge these expectations:
+
 ```bash
 $ cp biolog_list_of_expectations_upa.csv complete_list_of_expecations_upa.csv
 tail -n +2 tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecations_upa.csv  >> complete_list_of_expecations_upa.csv
