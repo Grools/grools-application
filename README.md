@@ -121,30 +121,9 @@ examples/
 
 ### Using UniPathway as Prior-Knowledge graph
 
-#### Expectations grab and format tasks
+#### Expectations: grab and format tasks
 
-Firstly you have to define a list of expected presence of metabolic pathway in your organism. As example a proptotroph organism should have biosynthesis pathway for metabolites:
-- L-histidine
-- L-tryptophan
-- L-isoleucine
-- L-leucine
-- L-valine
-- L-threonine
-- L-arginine
-- L-proline
-- L-phenylalanine
-- L-tyrosine
-- L-alanine
-- L-asparagine
-- L-serine
-- L-cysteine
-- glycine
-- L-lysine
-- L-glutamate
-- L-methionine
-- L-aspartate
-- L-glutamine
-
+Firstly you have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all acido amino biosynthesis pathways for metabolites.
 These exepectations are stored into the file `expectation_upa_aa.csv` which link a metabolite to Unipathway Prior-Knowledge
 
 ```csv
@@ -205,7 +184,16 @@ This command generate a file `expectation_upa_aa.grools.csv`:
 "Exp_UPA01013";"UPA01013";"EXPERIMENTATION";"T";"";"Exp_UPA01013";"L-glutamine biosynthesis"
 ```
 
-Now you have representated your background knwoledge in GROOLS csv format. You have to convert Biolog experimations observations into GROOLS csv format as follow:
+Now you have representated your background knwoledge in GROOLS csv format, you have to convert Biolog experimations observations into GROOLS csv format. As Biolog experimentation results are representated with numerical growth values. This quantitative growth phenotype data should be first discretized using the [omp](http://bioinformatics.oxfordjournals.org/content/29/14/1823.short) R package with "grofit" aggregation method and weak discretization (-a, -w and -z options of run_opm.R program). Observations are discretized to three states: `FALSE` (no growth), `TRUE` (growth), `NA` (growth maybe).
+Sample of a file after discretization of Biolog numerical values:
+
+```csv
+"File"	"Plate_Type"	"Position"	"Setup_Time"	"Well"	"mu"	"lambda"	"A"	"AUC"	"mu_CI95_low"	"lambda_CI95_low"	"A_CI95_low"	"AUC_CI95_low"	"mu_CI95_high"	"lambda_CI95_high"	"A_CI95_high"	"AUC_CI95_high"	"Aggr_software"	"Aggr_version"	"Aggr_method"	"Discretized"	"Disc_software"	"Disc_version"	"Disc_method"
+".//01_Abaylyi_PM1_A_101117.csv"	"PM01"	"15-A"	"Nov 17 2010 5:28 PM"	"A01"	11.0239490374402	0.101998280074103	50.0586437522741	4437.423792864	10.8538314459345	-51.4322872382767	50.2978431840183	4398.07750163227	16.5264325297181	85.9780629028097	53.0550158798986	4463.39457157138	"opm"	"1.3.51"	"grofit"	FALSE	"opm"	"1.3.51"	"kmeans"
+".//01_Abaylyi_PM1_A_101117.csv"	"PM01"	"15-A"	"Nov 17 2010 5:28 PM"	"A02"	6.47772286994336	-1.17233134884521	50.2660273428748	4294.08252281865	5.46716638240377	-34.66207762553	50.201817207401	4251.13805006296	14.7111400864039	119.317927831985	54.03143182126	4316.55817358922	"opm"	"1.3.51"	"grofit"	FALSE	"opm"	"1.3.51"	"kmeans"
+".//01_Abaylyi_PM1_A_101117.csv"	"PM01"	"15-A"	"Nov 17 2010 5:28 PM"	"A03"	5.4787776379894	-0.0367891891096806	29.6073109885561	2566.50462868851	3.31739323527425	-17.3502549023257	29.7878444150652	2537.08932176093	17.0850517869014	148.128379766773	34.4615301314378	2582.13004990163	"opm"	"1.3.51"	"grofit"	FALSE	"opm"	"1.3.51"	"kmeans"
+".//01_Abaylyi_PM1_A_101117.csv"	"PM01"	"15-A"	"Nov 17 2010 5:28 PM"	"A04"	28.2949132058871	2.32411771576596	280.974739519407	24314.2418801986	24.6195674041815	-1.88104660891929	279.792049404854	24166.4620590466	33.2211611953979	8.79005432069948	282.364609613145	24389.7797251403	"opm"	"1.3.51"	"grofit"	TRUE	"opm"	"1.3.51"	"kmeans"
+```
 
 ```bash
 $ ./scripts/biologToGroolsExpectations.py examples/biolog/pk_observation_mapper/biolog_plates_cells_name_evidencesForUPA_description.tsv biolog_list_of_expectations_upa.csv  examples/biolog/AbaylyiADP1/*.tab
