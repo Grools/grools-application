@@ -186,7 +186,7 @@ This command generate a file named `expectation_upa_aa.grools.csv`:
 "Exp_UPA01012";"UPA01012";"EXPERIMENTATION";"T";"";"Exp_UPA01012";"L-aspartate biosynthesis"
 "Exp_UPA01013";"UPA01013";"EXPERIMENTATION";"T";"";"Exp_UPA01013";"L-glutamine biosynthesis"
 ```
-&#x1F536; Indeed you can to write directly this file.
+&#x1F536; Indeed you can to write directly a such file.
 
 ##### Biolog experimentations
 
