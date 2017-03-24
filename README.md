@@ -158,7 +158,7 @@ Once this file is made you ave to convert this list to GROOLS csv file format (s
 To perform this task, simply run:
 
 ```bash
-$ ./scripts/list_converter.sh examples/expectation_upa_aa.csv examples/expectation_upa_aa.grools.csv
+$ ./scripts/expectations_list_to_grools_csv.sh examples/expectation_upa_aa.csv examples/expectation_upa_aa.grools.csv
 ```
 
 This command generate a file named `expectation_upa_aa.grools.csv`:
