@@ -124,7 +124,7 @@ examples/
 #### Expectations: grab and format tasks
 
 Firstly you have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all acido amino biosynthesis pathways for metabolites.
-These exepectations are stored into the file `expectation_upa_aa.csv` which link a metabolite to Unipathway Prior-Knowledge
+These expectations are stored into the file `expectation_upa_aa.csv` :
 
 ```csv
 $ cat examples/expectation_upa_aa.csv
