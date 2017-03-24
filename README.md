@@ -236,7 +236,7 @@ To merge these expectations:
 
 ```bash
 $ cp biolog_list_of_expectations_upa.csv complete_list_of_expecations_upa.csv
-tail -n +2 tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecations_upa.csv  >> complete_list_of_expecations_upa.csv
+$ tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecations_upa.csv  >> complete_list_of_expecations_upa.csv
 ```
 
 #### Run GROOLS application
