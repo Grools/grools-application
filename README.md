@@ -126,7 +126,7 @@ examples/
 ##### Background knowkedge
 
 Often you expect to retrieve a list of metabolic pathways as you have acquired a background knwoledge on your studied organism (from your experience and the litterarure). Thus we provides a tool to convert your expectations list to GROOLS csv file format.
-You have to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all amino acid biosynthesis pathways.
+You can to define a list of expected presence of metabolic pathways in your organism. As example a proptotroph organism should have all amino acid biosynthesis pathways.
 Such expectations are stored into the file `expectation_upa_aa.csv` as follow :
 
 ```csv
@@ -155,13 +155,13 @@ UPA01013;L-glutamine biosynthesis
 ```
 
 Once this file is made you ave to convert this list to GROOLS csv file format (see section [GROOLS CSV file format](#grools-csv-file-format)).
-To perform this task run:
+To perform this task, simply run:
 
 ```bash
 $ ./scripts/list_converter.sh examples/expectation_upa_aa.csv examples/expectation_upa_aa.grools.csv
 ```
 
-This command generate a file `expectation_upa_aa.grools.csv`:
+This command generate a file named `expectation_upa_aa.grools.csv`:
 
 ```csv
 "Name";"EvidenceFor";"Type";"isPresent";"Source";"Label";"Description"
@@ -186,7 +186,7 @@ This command generate a file `expectation_upa_aa.grools.csv`:
 "Exp_UPA01012";"UPA01012";"EXPERIMENTATION";"T";"";"Exp_UPA01012";"L-aspartate biosynthesis"
 "Exp_UPA01013";"UPA01013";"EXPERIMENTATION";"T";"";"Exp_UPA01013";"L-glutamine biosynthesis"
 ```
-Indeed you can to write directly this file.
+**Indeed you can to write directly this file.**
 
 ##### Biolog experimentations
 
