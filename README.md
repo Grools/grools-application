@@ -148,7 +148,7 @@ Firstly you have to define a list of expected presence of metabolic pathway in y
 These exepectations are stored into the file `expectation_upa_aa.csv` which link a metabolite to Unipathway Prior-Knowledge
 
 ```csv
-cat examples/expectation_upa_aa.csv
+$ cat examples/expectation_upa_aa.csv
 Accession;Name
 UPA00031;L-histidine biosynthesis
 UPA00035;L-tryptophan biosynthesis
@@ -236,7 +236,7 @@ This command generate a file `biolog_list_of_expectations_upa.csv`
 
 You have to merge these observations with Biolog experimations observations.
 ```bash
-cp biolog_list_of_expectations_upa.csv complete_list_of_expecations_upa.csv
+$ cp biolog_list_of_expectations_upa.csv complete_list_of_expecations_upa.csv
 tail -n +2 tail -n +2 examples/expectation_upa_aa.grools.csv  >> complete_list_of_expecations_upa.csv  >> complete_list_of_expecations_upa.csv
 ```
 
