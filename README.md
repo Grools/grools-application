@@ -229,7 +229,7 @@ Results are viewable with a browser, open: `res/microscope_upa_normal/index.html
 
 ##### The correspondence table Organism <-> Sequence ID 
 
-| Organism name;Sequences ID list                                           |                                                                                                             | 
+| Organism name                                                             |  Sequences ID list                                                                                          | 
 |---------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------| 
 | Acaryochloris marina MBIC11017                                            | 1117,1118,1119,1110,1111,1112,1113,1114,1115,1116                                                           | 
 | Acetivibrio cellulolyticus CD2                                            | 9881                                                                                                        | 
