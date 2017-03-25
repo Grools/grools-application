@@ -213,7 +213,7 @@ Results are viewable with a browser, open: `res/uniprot_upa_normal/index.html` o
 
 The sequence id of A. baylyi ADP1 is `36` in MiscroScope platform.
 
-The correspondence table `Organism <-> Sequence ID`  is available  into [o_name_s_id.sorted.tsv](examples/o_name_s_id.sorted.tsv) tabulated file.
+The correspondence table `Organism <-> Sequence ID`  is available  into the csv file: [orgagismName_sequencesId.csv](examples/orgagismName_sequencesId.csv) .
 
 ##### Normal reasoning mode:
 
