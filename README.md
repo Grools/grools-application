@@ -227,7 +227,7 @@ $ ./scripts/microscope_upaToGrools.sh -s -o res/microscope_upa_specific 36 compl
 
 Results are viewable with a browser, open: `res/microscope_upa_normal/index.html` or  `res/microscope_upa_specific/index.html`
 
-##### The correspondence table Organim <-> Sequence ID 
+##### The correspondence table Organism <-> Sequence ID 
 
 | Organism name                                                             | Sequences ID list                                                                                           | 
 |---------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------| 
