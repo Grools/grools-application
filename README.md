@@ -116,6 +116,7 @@ examples/
 │       └── biolog_plates_cells_name_evidencesForUPA_description.tsv
 ├── expectation_genprop_aa.csv
 └── expectation_upa_aa.csv
+└── organismName_sequencesId.csv
 
 ```
 
@@ -213,7 +214,7 @@ Results are viewable with a browser, open: `res/uniprot_upa_normal/index.html` o
 
 The sequence id of A. baylyi ADP1 is `36` in MiscroScope platform.
 
-The correspondence table `Organism <-> Sequence ID`  is available  into the csv file: [orgagismName_sequencesId.csv](examples/orgagismName_sequencesId.csv) .
+The correspondence table `Organism <-> Sequence ID`  is available  into the csv file: [organismName_sequencesId.csv](examples/organismName_sequencesId.csv) .
 
 ##### Normal reasoning mode:
 
