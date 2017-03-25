@@ -227,6 +227,7 @@ $ ./scripts/microscope_upaToGrools.sh -s -o res/microscope_upa_specific 36 compl
 
 Results are viewable with a browser, open: `res/microscope_upa_normal/index.html` or  `res/microscope_upa_specific/index.html`
 
+##### The correspondence table Organim <-> Sequence ID 
 
 | Organism name                                                   | Sequences ID list                                                                                           | 
 |-----------------------------------------------------------------|-------------------------------------------------------------------------------------------------------------| 
@@ -248,7 +249,11 @@ Results are viewable with a browser, open: `res/microscope_upa_normal/index.html
 | Mycoplasma pneumoniae                                           | 1625                                                                                                        | 
 | Neisseria meningitidis                                          | 24                                                                                                          | 
 | Rickettsia prowazekii                                           | 25                                                                                                          | 
-| Borrelia burgdorferi                                            | 2480,2481,26,2482,2467,2483,2468,2484,2469,2485,2470,2486,2471,2487,2472,2473,2474,2475,2476,2477,2478,2479 | 
+| Borrelia burgdorferi                                            | 2480,2481,26,2482,2467,
+2483,2468,2484,2469,2485,
+2470,2486,2471,2487,2472,
+2473,2474,2475,2476,2477,
+2478,2479 | 
 | Thermotoga maritima                                             | 27                                                                                                          | 
 | Pseudomonas aeruginosa                                          | 3745                                                                                                        | 
 | Pseudoalteromonas haloplanktis                                  | 75,76                                                                                                       | 
