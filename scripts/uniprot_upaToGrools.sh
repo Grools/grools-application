@@ -207,7 +207,7 @@ WHERE {
   }
   FILTER (?proteome = proteomes:'"${proteome}"')
 }
-group by ?protein ?ec ?pathwayAnnotationXref'
+group by ?protein ?ec ?pathwayAnnotationXref')
     } > "${proteome_file}"
 
 }
