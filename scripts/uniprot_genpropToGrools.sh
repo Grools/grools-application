@@ -1,5 +1,4 @@
 #!/usr/bin/env bash
-#set -x
 declare appname=$(basename $0)
 declare version='1.0.0'
 declare grools='./grools-application.jar'
@@ -54,6 +53,10 @@ id_is_present () {
     # key obviously exists. Otherwise, we need to check if
     # the special expansion produces an empty string or an
     # arbitrary non-empty string.
+    if [[ -z $1 ]]; then
+        (>&2 echo "Error: empty id")
+        exit 1;
+    fi
     [[ -n ${ids[$1]} || -z ${ids[$1]-foo} ]] && return 1 || return 0
 }
 
@@ -82,7 +85,7 @@ grab_uniprot_file(){
       while IFS=';' read -ra PKS; do
         for i in "${PKS[@]}"; do
           id_counter=0
-          label=${entry}'_'${i}
+          tmplabel=${entry}'_'${i}
           while ! id_is_present "${tmplabel}"; do
             ((id_counter++))
              tmplabel="${label}_${id_counter}"
